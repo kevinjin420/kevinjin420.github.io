@@ -1,18 +1,22 @@
 // import React from 'react';
-import { Link } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom';
 
 function Navbar() {
   return (
-    <nav className="navbar">
-      <div>
-        TEXT
-      </div>
-      <div className="flex">
-        <Link to="/"> Home </Link>
-        <Link to="/about"> About </Link>
-        <Link to="/projects"> Projects </Link>
-      </div>
-    </nav>
+    <>
+      <nav className="navbar">
+        <div>
+          NAME?
+        </div>
+        <div className="flex">
+          <Link to="/"> Home </Link>
+          <Link to="/about"> About </Link>
+          <Link to="/projects"> Projects </Link>
+        </div>
+      </nav>
+
+      <Outlet />
+    </>
   );
 }
 
