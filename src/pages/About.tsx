@@ -1,25 +1,20 @@
-// import { useState } from 'react'
-// import { BrowserRouter as Router, Routes } from 'react-router-dom';
 import '../App.css'
 import portrait from '../assets/portrait.png';
+import banner from '../assets/sky.png';
 
 function About() {
 
   return (
     <div className="min-h-screen flex flex-col" >
-        <div
-        style={{
-          width: '100%',
-          height: '300px',
-          backgroundColor: '#ffffff',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          marginBottom: '20px',
-        }}
-      >
-        <h1 style={{ fontSize: '2.5rem', color: '#555' }}>banner placeholder</h1>
-      </div>
+        <img
+          src={banner}
+          alt="Banner"
+          style={{
+            width: '100%',
+            height: '300px',
+            objectFit: 'fill',
+          }}
+        />
 
       {/* Profile Picture and About Section */}
       <div style={{ display: 'flex', alignItems: 'center', margin: '0 20px 40px' }}>
