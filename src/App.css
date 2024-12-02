@@ -52,7 +52,6 @@
 
 .navbar .flex {
   display: flex;
-  justify-content: flex-end;
   gap: 24px;
-  margin-right: 2.5%;
+  margin-right: 40px;
 }
