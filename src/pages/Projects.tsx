@@ -8,7 +8,7 @@ function Projects() {
   return (
     <div className="min-h-screen flex flex-col">
         <Navbar />
-        <h1>scheisse</h1>
+        <h1>stuff</h1>
     </div>
   )
 }
