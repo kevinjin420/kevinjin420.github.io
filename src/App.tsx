@@ -1,25 +1,27 @@
 import './App.css'
-import { Routes, Route } from "react-router-dom";
-import { browserHistory } from 'react-router'
+// import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
 import Projects from './pages/Projects';
 import Page404 from './pages/Page404';
 
-function App() {
+export default function App() {
   return (
-    // <Router history={browserHistory} routes={routes} />,
-    // document.getElementById('app')
-    <Routes>
-    <Route path="/" element={<Navbar />}>
-      <Route index element={<Home />} />
-      <Route path="about" element={<About />} />
-      <Route path="projects" element={<Projects />} />
-      <Route path="*" element={<Page404 />} />
-    </Route>
-  </Routes>
+    <BrowserRouter>
+      <Routes>
+      <Route path="/" element={<Navbar />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="*" element={<Page404 />} />
+      </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 
-export default App
+// const root = createRoot(document.getElementById('root'));
+// root.render(<App/>);
+
