@@ -38,8 +38,6 @@
   justify-content: space-between;
   padding: 20px; 
   z-index: 1000; 
-  outline-style: solid;
-  outline-color: purple;
 }
 
 .navbar a:hover {
@@ -54,8 +52,6 @@
 
 .banner {
   margin-top: 0px;
-  outline-style: solid;
-  outline-color: pink;
 }
 
 .signature {
@@ -65,4 +61,22 @@
 .content{
   position: fixed;
   top: 0;
+  width: 100%;
+}
+
+.about-section {
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+  width: 90%;
+  padding: 20px;
+}
+
+.about-section .profile-picture {
+  flex-shrink: 0;
+}
+
+.about-section .about-text {
+  flex: 1; 
+  padding-left: 20px; 
 }

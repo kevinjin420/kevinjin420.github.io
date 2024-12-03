@@ -6,7 +6,7 @@ function Navbar() {
     <>
       <nav className="navbar">
         <div className='signature'>
-          Shengran (Kevin) Jin
+        <Link to="/"> Shengran (Kevin) Jin </Link>
         </div>
         <div className="flex">
           <Link to="/"> Home </Link>

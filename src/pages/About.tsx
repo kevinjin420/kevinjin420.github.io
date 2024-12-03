@@ -19,7 +19,7 @@ function About() {
         />
 
       {/* pfp and about */}
-      <div style={{ display: 'flex', alignItems: 'center', margin: '0 20px 40px' }}>
+      <div className="about-section" style={{ display: 'flex', alignItems: 'center', margin: '0 20px 40px'}}>
         <img
           src={portrait}
           alt="Profile"
@@ -31,7 +31,7 @@ function About() {
           }}
         />
         <div>
-          <h2 style={{ fontSize: '2rem', marginBottom: '10px' }}>About Me</h2>
+          <h2 style={{ fontSize: '2rem', marginBottom: '10px'}}>About Me</h2>
           <p>
             Hi, I’m Shengran Jin, but call me Kevin! I’m a student at the University of Michigan 
             College of Engineering, double majoring in Computer Engineering and Data Science. 
