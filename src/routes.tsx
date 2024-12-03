@@ -7,7 +7,7 @@ import About from "./pages/About";
 import Projects from "./pages/Projects";
 
 const AppRoutes = () => {
-  return (
+  return ( 
     <Routes>
       <Route path="/" Component={Home} />
       <Route path="/about" Component={About} />

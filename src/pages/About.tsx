@@ -5,18 +5,20 @@ import banner from '../assets/sky.png';
 function About() {
 
   return (
-    <div className="min-h-screen flex flex-col" >
+    <div className="content" >
+        {/* banner */}
         <img
           src={banner}
+          className='banner'
           alt="Banner"
           style={{
             width: '100%',
-            height: '300px',
-            objectFit: 'fill',
+            height: '250px',
+            objectFit: 'cover',
           }}
         />
 
-      {/* Profile Picture and About Section */}
+      {/* pfp and about */}
       <div style={{ display: 'flex', alignItems: 'center', margin: '0 20px 40px' }}>
         <img
           src={portrait}

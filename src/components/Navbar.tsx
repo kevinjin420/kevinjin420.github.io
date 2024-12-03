@@ -5,8 +5,8 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div>
-          NAME?
+        <div className='signature'>
+          Shengran (Kevin) Jin
         </div>
         <div className="flex">
           <Link to="/"> Home </Link>
@@ -14,7 +14,6 @@ function Navbar() {
           <Link to="/projects"> Projects </Link>
         </div>
       </nav>
-
       <Outlet />
     </>
   );
