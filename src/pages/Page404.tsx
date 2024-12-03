@@ -1,12 +1,12 @@
 import '../App.css'
 
-function Projects() {
+function Page404() {
 
   return (
     <div className="min-h-screen flex flex-col">
-        <h1>stuff</h1>
+        <h1>404</h1>
     </div>
   )
 }
 
-export default Projects
+export default Page404
