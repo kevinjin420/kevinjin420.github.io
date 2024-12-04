@@ -1,5 +1,6 @@
 import './App.css'
 // import { createRoot } from 'react-dom/client';
+import { HashRouter } from 'react-router-dom';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
@@ -9,7 +10,7 @@ import Page404 from './pages/Page404';
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
       <Route path="/" element={<Navbar />}>
         <Route index element={<Home />} />
@@ -18,7 +19,7 @@ export default function App() {
         <Route path="*" element={<Page404 />} />
       </Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   )
 }
 
