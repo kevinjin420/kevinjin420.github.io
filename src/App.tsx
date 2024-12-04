@@ -1,7 +1,7 @@
 import './App.css'
 // import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import About from './pages/About';
