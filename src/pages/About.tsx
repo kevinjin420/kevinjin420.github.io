@@ -20,7 +20,7 @@ function About() {
         />
 
       {/* pfp and about */}
-      <div className="about-section" style={{ display: 'flex', alignItems: 'center', margin: '0 20px 40px'}}>
+      <div className="about-section" style={{ display: 'flex', alignItems: 'center', margin: '0 10px 0px'}}>
         <img
           src={portrait}
           alt="Profile"
@@ -95,7 +95,9 @@ function About() {
         </div>
 
       </div>
-
+      <p>
+        cringe
+      </p>
       {/* Photos Section */}
       <div style={{ margin: '0 20px 40px' }}>
         <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Gallery</h2>
