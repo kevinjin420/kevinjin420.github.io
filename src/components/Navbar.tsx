@@ -5,9 +5,9 @@ function Navbar() {
   return (
     <>
       <nav className="navbar">
-        <div className='signature'>
+        <h1 className='signature'>
         <Link to="/"> Shengran (Kevin) Jin </Link>
-        </div>
+        </h1>
         <div className="flex">
           <Link to="/"> Home </Link>
           <Link to="/about"> About </Link>
