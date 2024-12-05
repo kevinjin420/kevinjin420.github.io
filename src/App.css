@@ -63,7 +63,7 @@
 }
 
 .content{
-  position: fixed;
+  /* position: fixed; */
   top: 0;
   width: 100%;
 }
@@ -83,4 +83,60 @@
 .about-section .about-text {
   flex: 1; 
   padding-left: 20px; 
+}
+
+.socials svg {
+  fill: white; /* Forces the icon color to blue */
+}
+
+.socials{
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* //////////////////////////// */
+
+.socials {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  opacity: 0;
+  background-color: black;
+  color: white;
+  text-align: center;
+  padding: 5px 8px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: 150%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+  z-index: 10;
+}
+
+.tooltip .tooltip-text::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: black transparent transparent transparent;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
 }
