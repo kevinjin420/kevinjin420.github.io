@@ -6,6 +6,7 @@
   text-align: center;
 }
 
+
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -22,6 +23,27 @@
 
 .card {
   padding: 0px;
+  background-color: #333;
+  color: white;
+  border: 1px solid #444;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  margin: 10px;
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.card .MuiTypography-root {
+  color: white;
+}
+
+.card .MuiButton-root {
+  color: white;
+  border-color: white;
+}
+
+.card .MuiButton-root:hover {
+  background-color: #555;
+  border-color: white;
 }
 
 .navbar {
@@ -144,6 +166,17 @@
 .tooltip:hover .tooltip-text {
   visibility: visible;
   opacity: 1;
+}
+
+.Card {
+  margin-left: 10px;
+  margin-right: 10px;
+  min-width: 300px;
+}
+
+.CardContent{
+  padding: 10px;
+  color: black;
 }
 
 /* SOCIALS BAR END */

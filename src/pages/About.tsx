@@ -99,7 +99,7 @@ function About() {
         cringe
       </p>
       {/* Photos Section */}
-      <div style={{ margin: '0 20px 40px' }}>
+      {/* <div style={{ margin: '0 20px 40px' }}>
         <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Gallery</h2>
         <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center'}}>
           {[1, 2, 3, 4].map((_, index) => (
@@ -119,7 +119,7 @@ function About() {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
 
       {/* Additional Content Section */}
       <div style={{ margin: '0 20px' }}>
