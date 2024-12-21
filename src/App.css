@@ -22,28 +22,14 @@
 
 
 .card {
-  padding: 0px;
-  background-color: #333;
-  color: white;
+  min-width: 300px;
+  background-color: rgba(0, 0, 0, 1);
+  color: rgba(0, 0, 0, 1);
   border: 1px solid #444;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   margin: 10px;
-  padding: 20px;
-  border-radius: 8px;
-}
-
-.card .MuiTypography-root {
-  color: white;
-}
-
-.card .MuiButton-root {
-  color: white;
-  border-color: white;
-}
-
-.card .MuiButton-root:hover {
-  background-color: #555;
-  border-color: white;
+  padding: 10px;
+  border-radius: 10px;
 }
 
 .navbar {
@@ -87,6 +73,10 @@
   font-weight: 400;
   font-style: normal;
   font-size: 40px;
+}
+
+.signature:hover{
+  text-shadow: 0 0 20px #ffffff;
 }
 
 .content{
@@ -172,11 +162,6 @@
   margin-left: 10px;
   margin-right: 10px;
   min-width: 300px;
-}
-
-.CardContent{
-  padding: 10px;
-  color: black;
 }
 
 /* SOCIALS BAR END */

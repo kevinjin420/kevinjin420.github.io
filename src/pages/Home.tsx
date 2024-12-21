@@ -14,7 +14,7 @@ function Home() {
       <div className="flex-grow container mx-auto px-4 pt-20"> 
       <h1 className="text-center mb-6">Hi, I'm Kevin, </h1>
         <h1 className="text-center mb-6">Welcome to my site!</h1>
-        <div className="card flex flex-col items-center">
+        <div className="flex flex-col items-center">
           <button 
             onClick={() => setCount((count) => count + 1)}
             className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"

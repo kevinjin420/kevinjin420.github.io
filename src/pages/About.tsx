@@ -2,6 +2,10 @@ import '../App.css'
 import portrait from '../assets/portrait.png';
 import banner from '../assets/sky.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import HorizontalCard from '../components/HorizontalCard';
+import bikePhoto from '../assets/bike_photo.jpg';
+import wiringPhoto from '../assets/wiring_photo.jpg';
+import roverPhoto from '../assets/rover_photo.png';
 
 function About() {
 
@@ -95,40 +99,34 @@ function About() {
         </div>
 
       </div>
-      <p>
-        cringe
-      </p>
-      {/* Photos Section */}
-      {/* <div style={{ margin: '0 20px 40px' }}>
-        <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>Gallery</h2>
-        <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap', alignItems: 'center'}}>
-          {[1, 2, 3, 4].map((_, index) => (
-            <div
-              key={index}
-              style={{
-                width: '200px',
-                height: '200px',
-                backgroundColor: '#ddd',
-                display: 'flex',
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: '10px',
-              }}
-            >
-              <span>Photo {index + 1}</span>
-            </div>
-          ))}
-        </div>
-      </div> */}
 
-      {/* Additional Content Section */}
-      <div style={{ margin: '0 20px' }}>
-        <h2 style={{ fontSize: '1.8rem', marginBottom: '20px' }}>More About Me</h2>
-        <p>
-          e
-        </p>
+      {/* yes */}
+      <div>
+        <HorizontalCard
+          imagePath={wiringPhoto}
+          imageAlign="left"
+          altText="Placeholder"
+          text="I'm passionate for both hardware and software development, and beyond my coursework and personal projects in Computer Engineering and Data Science, I also possess interests and knowledge in Mechanical and Electrical engineering. I've  built custom wiring for my 3D printers and drones, and also use Fusion360 and Solidworks to build, test, and manufacture supporting components via a 3D printer. "
+        />
+      </div>
+      <div>
+        <HorizontalCard
+          imagePath={roverPhoto}
+          imageAlign="right"
+          altText="Placeholder"
+          text="I'm a member of the Michigan Mars Rover Team, a student organization at the University of Michigan that designs, builds, and tests a Mars rover to compete in the University Rover Challenge. I am currently working on the Software team, designing and building the frontend service for smooth and intuitive operation and remote control of the Rover. My time on the team has been incredibly rewarding, and has taught me a lot about collaborative coding. "
+        />
+      </div>
+      <div>
+        <HorizontalCard
+          imagePath={bikePhoto}
+          imageAlign="left"
+          altText="Placeholder"
+          text="I'm an avid cyclist! I have cycled throughout my childhood growing up in Beijing, China, and has been cyling in the US ever since high school, which I attended in Bethesda, Maryland. I own a Giant Revolt gravel bike, and has clocked nearly 10,000 kilometers on Strava, with 4,100 kilometers cycled in 2022. "
+        />
       </div>
     </div>
+    
   )
 }
 
