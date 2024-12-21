@@ -1,48 +1,12 @@
-import '../App.css'
-import portrait from '../assets/portrait.png';
-import ume from '../assets/banner28.png';
+import '../App.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import HorizontalCard from '../components/HorizontalCard';
-import bikePhoto from '../assets/bike_photo.jpg';
-import wiringPhoto from '../assets/wiring_photo.jpg';
-import roverPhoto from '../assets/rover_photo.png';
 
-function About() {
+function Contact() {
 
-  return (
-    <div className="content" >
-        {/* banner */}
-        <img
-          src={ume}
-          className='banner'
-          alt="Banner"
-          style={{
-            width: '100%',
-            height: '210px',
-            objectFit: 'cover',
-          }}
-        />
-
-      {/* pfp and about */}
-      <div className="about-section" style={{ display: 'flex', alignItems: 'center', margin: '0 10px 0px'}}>
-        <img
-          src={portrait}
-          alt="Profile"
-          style={{
-            width: '150px',
-            height: '150px',
-            borderRadius: '50%',
-            marginRight: '20px',
-          }}
-        />
-        <div>
-          <h2 style={{ fontSize: '2rem', marginBottom: '10px'}}>About Me</h2>
-          <p>
-            Hi, I’m Shengran Jin, but call me Kevin! I’m a student at the University of Michigan 
-            College of Engineering, double majoring in Computer Engineering and Data Science. 
-          </p>
-        </div>
-      </div>
+    return (
+  
+      <div className="min-h-screen flex flex-col">
+        <h1>Find me here!</h1>
       <div className='socials'>
         <div className="tooltip"> {/* ins */}
           <a href="https://www.instagram.com/kevin.jin0420/" target="_blank" rel="noopener noreferrer">
@@ -97,37 +61,10 @@ function About() {
           </a>
           <span className="tooltip-text">Email kevinjin0420@gmail.com</span>
         </div>
-
       </div>
-
-      {/* yes */}
-      <div>
-        <HorizontalCard
-          imagePath={wiringPhoto}
-          imageAlign="left"
-          altText="e"
-          text="I'm passionate for both hardware and software development, and beyond my coursework and personal projects in Computer Engineering and Data Science, I also possess interests and knowledge in Mechanical and Electrical engineering. I've  built custom wiring for my 3D printers and drones, and also use Fusion360 and Solidworks to build, test, and manufacture supporting components via a 3D printer. "
-        />
       </div>
-      <div>
-        <HorizontalCard
-          imagePath={roverPhoto}
-          imageAlign="right"
-          altText="e"
-          text="I'm a member of the Michigan Mars Rover Team, a student organization at the University of Michigan that designs, builds, and tests a Mars rover to compete in the University Rover Challenge. I am currently working on the Software team, designing and building the frontend service for smooth and intuitive operation and remote control of the Rover. My time on the team has been incredibly rewarding, and has taught me a lot about collaborative coding. "
-        />
-      </div>
-      <div>
-        <HorizontalCard
-          imagePath={bikePhoto}
-          imageAlign="left"
-          altText="e"
-          text="I'm an avid cyclist! I have cycled throughout my childhood growing up in Beijing, China, and has been cyling in the US ever since high school, which I attended in Bethesda, Maryland. I own a Giant Revolt gravel bike, and has clocked nearly 10,000 kilometers on Strava, with 4,100 kilometers cycled in 2022. "
-        />
-      </div>
-    </div>
-    
-  )
-}
-
-export default About
+    )
+  }
+  
+  export default Contact
+  
