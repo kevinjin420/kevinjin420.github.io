@@ -19,7 +19,7 @@ function Home() {
             onClick={() => setCount((count) => count + 1)}
             className="mb-4 px-4 py-2 bg-blue-500 text-white rounded"
           >
-            count is {count}
+            cookie clicker if you're bored: {count}
           </button>
         </div>
       </div>

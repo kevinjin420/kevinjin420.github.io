@@ -1,6 +1,7 @@
 import '../App.css'
 import portrait from '../assets/portrait.png';
-import banner from '../assets/sky.png';
+// import banner from '../assets/sky.png';
+import ume from '../assets/banner28.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import HorizontalCard from '../components/HorizontalCard';
 import bikePhoto from '../assets/bike_photo.jpg';
@@ -13,12 +14,12 @@ function About() {
     <div className="content" >
         {/* banner */}
         <img
-          src={banner}
+          src={ume}
           className='banner'
           alt="Banner"
           style={{
             width: '100%',
-            height: '250px',
+            height: '210px',
             objectFit: 'cover',
           }}
         />
@@ -105,7 +106,7 @@ function About() {
         <HorizontalCard
           imagePath={wiringPhoto}
           imageAlign="left"
-          altText="Placeholder"
+          altText="e"
           text="I'm passionate for both hardware and software development, and beyond my coursework and personal projects in Computer Engineering and Data Science, I also possess interests and knowledge in Mechanical and Electrical engineering. I've  built custom wiring for my 3D printers and drones, and also use Fusion360 and Solidworks to build, test, and manufacture supporting components via a 3D printer. "
         />
       </div>
@@ -113,7 +114,7 @@ function About() {
         <HorizontalCard
           imagePath={roverPhoto}
           imageAlign="right"
-          altText="Placeholder"
+          altText="e"
           text="I'm a member of the Michigan Mars Rover Team, a student organization at the University of Michigan that designs, builds, and tests a Mars rover to compete in the University Rover Challenge. I am currently working on the Software team, designing and building the frontend service for smooth and intuitive operation and remote control of the Rover. My time on the team has been incredibly rewarding, and has taught me a lot about collaborative coding. "
         />
       </div>
@@ -121,7 +122,7 @@ function About() {
         <HorizontalCard
           imagePath={bikePhoto}
           imageAlign="left"
-          altText="Placeholder"
+          altText="e"
           text="I'm an avid cyclist! I have cycled throughout my childhood growing up in Beijing, China, and has been cyling in the US ever since high school, which I attended in Bethesda, Maryland. I own a Giant Revolt gravel bike, and has clocked nearly 10,000 kilometers on Strava, with 4,100 kilometers cycled in 2022. "
         />
       </div>
