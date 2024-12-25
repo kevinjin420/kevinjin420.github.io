@@ -40,6 +40,7 @@ function About() {
           <p>
             Hi, I’m Shengran Jin, but call me Kevin! I’m a student at the University of Michigan 
             College of Engineering, double majoring in Computer Engineering and Data Science. 
+            I am currently a freshman, and is expected to graduate by 2028. 
           </p>
         </div>
       </div>
