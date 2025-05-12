@@ -1,5 +1,3 @@
-import './App.css'
-// import { createRoot } from 'react-dom/client';
 import { HashRouter } from 'react-router-dom';
 import { Routes, Route } from "react-router-dom";
 import Navbar from './components/Navbar';
@@ -26,7 +24,3 @@ export default function App() {
     </HashRouter>
   )
 }
-
-// const root = createRoot(document.getElementById('root'));
-// root.render(<App/>);
-

@@ -1,16 +1,15 @@
-import '../App.css';
 import ProjectCard from '../components/ProjectCard';
 import dronePhoto from '../assets/drone_photo.jpg';
 import roverPhoto from '../assets/rover_photo.png';
-
-
+import Three from '../components/three';
+import RoverThree from '../components/rover-three';
 
 function Projects() {
 
 
   return (
-    <div className="min-h-screen flex flex-col items-center">
-      <h2 className="text-3xl font-bold mb-4">Here are some projects that I've worked on in my spare time!</h2>
+    <div className="flex flex-col items-center">
+      <h1 className="font-bold mb-4">My Projects</h1>
       <div>
         <ProjectCard
           imagePath={roverPhoto}
@@ -36,6 +35,10 @@ function Projects() {
           buttonText='none'
           buttonUrl='none'
         />
+      </div>
+      <div className=''>
+        <Three />
+        <RoverThree />
       </div>
     </div>
   )

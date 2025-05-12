@@ -1,5 +1,3 @@
-import '../App.css'
-
 function Page404() {
 
   return (

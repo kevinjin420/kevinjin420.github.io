@@ -1,4 +1,3 @@
-import '../App.css'
 import portrait from '../assets/portrait.png';
 import ume from '../assets/banner28.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
