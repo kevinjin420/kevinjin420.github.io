@@ -1,0 +1,57 @@
+import React from 'react';
+
+interface HorizontalCardProps {
+  imagePath: string;
+  imageAlign: 'left' | 'right';
+  altText: string;
+  title: string;
+  text: string;
+  tags: string[];
+  buttonPresent: boolean;
+  buttonText: string;
+  buttonUrl: string;
+}
+
+const HorizontalCard: React.FC<HorizontalCardProps> = ({
+  imagePath,
+  imageAlign,
+  altText,
+  title,
+  text,
+  tags,
+  buttonPresent,
+  buttonText,
+  buttonUrl,
+}) => {
+  return (
+    <div
+      className="horizontal-card"
+      style={{ flexDirection: imageAlign === 'left' ? 'row' : 'row-reverse' }}
+    >
+      <img src={imagePath} alt={altText} />
+      <div className="card-text-section">
+        <h2 className="card-title">{title}</h2>
+        <div className="card-tags">
+          {tags.map((tag, index) => (
+            <span key={index} className="card-tag">
+              {tag}
+            </span>
+          ))}
+        </div>
+        <p className="card-text">{text}</p>
+        {buttonPresent && (
+          <a
+            href={buttonUrl}
+            className="card-button"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {buttonText}
+          </a>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default HorizontalCard;

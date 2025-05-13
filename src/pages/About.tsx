@@ -1,7 +1,7 @@
 import portrait from '../assets/portrait.png';
 import ume from '../assets/banner28.png';
 import 'bootstrap-icons/font/bootstrap-icons.css';
-import HorizontalCard from '../components/HorizontalCard';
+import Card from '../components/Card';
 import bikePhoto from '../assets/bike_photo.jpg';
 import wiringPhoto from '../assets/wiring_photo.jpg';
 import roverPhoto from '../assets/rover_photo.png';
@@ -39,7 +39,7 @@ function About() {
           <p>
             Hi, I’m Shengran Jin, but call me Kevin! I’m a student at the University of Michigan 
             College of Engineering, double majoring in Computer Engineering and Data Science. 
-            I am currently a freshman, and is expected to graduate by 2028. 
+            I am expected to graduate by 2028. 
           </p>
         </div>
       </div>
@@ -102,7 +102,7 @@ function About() {
 
       {/* yes */}
       <div>
-        <HorizontalCard
+        <Card
           imagePath={wiringPhoto}
           imageAlign="left"
           altText="e"
@@ -110,7 +110,7 @@ function About() {
         />
       </div>
       <div>
-        <HorizontalCard
+        <Card
           imagePath={roverPhoto}
           imageAlign="right"
           altText="e"
@@ -118,7 +118,7 @@ function About() {
         />
       </div>
       <div>
-        <HorizontalCard
+        <Card
           imagePath={bikePhoto}
           imageAlign="left"
           altText="e"

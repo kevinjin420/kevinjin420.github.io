@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function ThemeToggle() {
@@ -8,16 +8,7 @@ function ThemeToggle() {
   });
 
   useEffect(() => {
-    const body = document.body;
-    if (isDarkMode) {
-      body.classList.add('bg-dark', 'text-white');
-      body.classList.remove('bg-light', 'text-dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      body.classList.add('bg-light', 'text-dark');
-      body.classList.remove('bg-dark', 'text-white');
-      localStorage.setItem('theme', 'light');
-    }
+    document.documentElement.setAttribute('data-bs-theme', isDarkMode ? 'dark' : 'light');
   }, [isDarkMode]);
 
   return (
