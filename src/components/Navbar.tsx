@@ -19,13 +19,13 @@ function Navbar() {
 
 	useEffect(() => {
 		if (navbarRef.current) {
-		setNavbarHeight(navbarRef.current.offsetHeight);
+			setNavbarHeight(navbarRef.current.offsetHeight);
 		}
 	}, []);
 
 	return (
 		<>
-		<nav ref={navbarRef} className="navbar navbar-expand-lg navbar-light bg-dark fixed-top shadow-sm">
+		<nav ref={navbarRef} className="navbar navbar-expand-lg fixed-top shadow-sm">
 			<div className="container-fluid">
 				<button
 					className="navbar-toggler bg-light"

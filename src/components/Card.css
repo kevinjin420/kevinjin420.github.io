@@ -13,10 +13,6 @@
 	border-radius: 8px;
 }
 
-h2 {
-	margin: 0 0 0 5px;
-}
-
 .text {
 	margin: 0;
 	font-size: 1rem;
@@ -45,16 +41,15 @@ h2 {
 	justify-content: center;
 	width: 60%;
 	align-items: center;
+	gap: 10px;
 }
 
 .card-title {
-	margin: 0 0 10px 0;
 	font-size: 1.5rem;
 	font-weight: bold;
 }
 
 .card-text {
-	margin: 10px 0;
 	font-size: 1rem;
 	line-height: 1.5;
 }

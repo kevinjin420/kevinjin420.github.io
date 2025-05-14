@@ -3,20 +3,21 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 
 function ThemeToggle() {
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
-    // initialize from localStorage
     return localStorage.getItem('theme') === 'dark';
   });
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-bs-theme', isDarkMode ? 'dark' : 'light');
+    const theme = isDarkMode ? 'dark' : 'light';
+    document.documentElement.setAttribute('data-bs-theme', theme);
+    localStorage.setItem('theme', theme);
   }, [isDarkMode]);
 
   return (
     <button
-      className="btn btn-secondary"
+      className="btn"
       onClick={() => setIsDarkMode(prev => !prev)}
     >
-        <i className={`bi ${isDarkMode ? 'bi-moon-stars' : 'bi-sun'}`}></i>
+      <i className={`bi ${isDarkMode ? 'bi-moon-stars' : 'bi-sun'}`}></i>
     </button>
   );
 }
