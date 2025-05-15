@@ -14,7 +14,7 @@ function ThemeToggle() {
 
   return (
     <button
-      className="btn"
+      className="btn btn-outline-secondary"
       onClick={() => setIsDarkMode(prev => !prev)}
     >
       <i className={`bi ${isDarkMode ? 'bi-moon-stars' : 'bi-sun'}`}></i>

@@ -1,10 +1,10 @@
 import * as THREE from 'three';
-import gsap from 'gsap'
+// import gsap from 'gsap'
 import { useEffect, useRef } from "react";
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 function MyThree() {
-	const refContainer = useRef(null);
+	const refContainer = useRef<HTMLDivElement | null>(null);
 	const initialized = useRef(false);
 
 	useEffect(() => {
@@ -15,7 +15,7 @@ function MyThree() {
 		const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 		const renderer = new THREE.WebGLRenderer({ antialias: true });
 		renderer.setSize(window.innerWidth, window.innerHeight);
-		refContainer.current?.appendChild(renderer.domElement);
+		refContainer.current?.appendChild(renderer.domElement); // check before rendering for strict mode
 
 		const light = new THREE.DirectionalLight(0xffffff, 1);
 		light.position.set(0, 1, 1).normalize();
@@ -31,7 +31,7 @@ function MyThree() {
 				loadedObject.scale.set(0.4, 0.4, 0.4);
 				loadedObject.rotation.x = -Math.PI / 2;
 				loadedObject.traverse(function (child) {
-					if (child.isMesh) {
+					if (child instanceof THREE.Mesh) {
 						child.material = new THREE.MeshBasicMaterial({ color: 0xCED8F7, wireframe: true });
 					}
 				});
@@ -68,7 +68,7 @@ function MyThree() {
 		};
 	}, []);
 
-	return <div ref={refContainer}></div>;
+	return <div ref={refContainer} />;
 }
 
 export default MyThree;
