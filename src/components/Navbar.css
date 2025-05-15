@@ -10,10 +10,6 @@
     background-color: #aaaaaa !important;
 }
 
-/* [data-bs-theme='dark'] .nav-link {
-    color: #000000 !important;
-} */
-
 [data-bs-theme='light'] .nav-link {
     color: #000000 !important;
 }
@@ -25,7 +21,5 @@
   
 .nav-item a:hover {
     color: #0736F8;
-    text-shadow: 0 0 10px #0736F8, 0 0 20px #0736F8;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    transform: translateY(-2px);
+    transform: translateY(-1px);
 }
