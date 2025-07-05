@@ -2,22 +2,14 @@ import React from "react";
 
 interface PDFViewerProps {
   pdfUrl: string;
-  width?: string;
-  height?: string;
 }
 
-const PDFViewer: React.FC<PDFViewerProps> = ({
-  pdfUrl,
-  width = "100%",
-  height = "100%",
-}) => {
+const PDFViewer: React.FC<PDFViewerProps> = ({ pdfUrl }) => {
   return (
-    <div style={{ height: '100%', width: '100%' }}>
+    <div className="w-screen h-screen">
       <iframe
         src={pdfUrl}
-        width={width}
-        height={height}
-        style={{ border: "none" }}
+        className="w-full h-full border-none"
         title="PDF Viewer"
       />
     </div>
