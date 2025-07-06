@@ -1,30 +1,25 @@
-import Card from '../components/Card';
-import roverPhoto from '../assets/rover_photo.png';
-// import Three from '../components/three';
-// import RoverThree from '../components/rover-three';
+import React , { useEffect } from 'react';
+import { PacmanLoader } from 'react-spinners';
+// @ts-expect-error stupid d.ts not recognized :)))))))))))))))
+import { initScene } from '../components/projects';
 
-function Projects() {
-	return (
-		<div className="flex flex-col items-center h-screen bg-blue-950">
-			<h1 className="font-bold mb-4 text-6xl text-white p-3 pt-5">My Projects</h1>
-			<div>
-				<Card
-				imagePath={roverPhoto}
-				imageAlign="left"
-				altText="MRover"
-				title="Michigan Mars Rover Team"
-				text="Developed the frontend interface using Vue.js, Bootstrap, and JavaScript. Integrated and tested with Python and C++ backend. "
-				tags={['Vue.js', 'Javascript', 'Bootstrap', 'Python', 'C++']}
-				buttonText='View Github Repo'
-				buttonUrl="https://github.com/umrover/mrover-ros2/"
-				/>
+const ProjectPage: React.FC = () => {
+  useEffect(() => {
+    const cleanup = initScene();
+
+    return () => {
+      cleanup();
+    };
+  }, []);
+
+  return (
+    <div>
+			<div id="loader" className="fixed top-0 left-0 w-screen h-screen bg-black text-white flex items-center justify-center text-2xl z-50">
+        <PacmanLoader color="#ffffff" size={50} />
 			</div>
-			{/* <div>
-				<Three />
-				<RoverThree />
-			</div> */}
-		</div>
-	)
-}
+      <canvas className='webgl'></canvas>
+    </div>
+  );
+};
 
-export default Projects
+export default ProjectPage;

@@ -69,7 +69,7 @@ const RoverThree: React.FC = () => {
 
     const loader = new FBXLoader()
     joints.forEach(joint => {
-        const path = `/meshes/${joint.file}`
+      const path = `/meshes/rover/${joint.file}`
       loader.load(path ,
         (fbx) => {
           fbx.traverse((child) => {

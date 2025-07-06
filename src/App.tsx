@@ -1,28 +1,20 @@
-import { HashRouter, Routes, Route } from 'react-router-dom';
-import './App.css';
-import Navbar from './components/Navbar';
-import Home from './pages/Home';
-import About from './pages/About';
-import Projects from './pages/Projects';
+import { HashRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import Navbar from "./components/Navbar";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Projects from "./pages/Projects";
 import Resume from "./pages/Resume";
 import Contact from "./pages/Contact";
-import Page404 from './pages/Page404';
+import Page404 from "./pages/Page404";
 
 export default function App() {
   return (
     <HashRouter>
       <Routes>
-        {/* Route for Home without Navbar */}
         <Route path="/" element={<Home />} />
 
-        {/* Routes with Navbar wrapper */}
-        <Route
-          element={
-            <>
-              <Navbar />
-            </>
-          }
-        >
+        <Route element={<Navbar />}>
           <Route path="about" element={<About />} />
           <Route path="projects" element={<Projects />} />
           <Route path="resume" element={<Resume />} />
