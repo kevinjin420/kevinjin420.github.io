@@ -1,24 +1,24 @@
-import { Outlet, Link } from 'react-router-dom'
-import { useState, useEffect, useRef } from 'react'
+import { Outlet, Link } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
-  const [navbarHeight, setNavbarHeight] = useState(0)
-  const navbarRef = useRef<HTMLDivElement>(null)
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [navbarHeight, setNavbarHeight] = useState(0);
+  const navbarRef = useRef<HTMLDivElement>(null);
 
   const toggleMenu = () => {
-    setMenuOpen(!menuOpen)
-  }
+    setMenuOpen(!menuOpen);
+  };
 
   const closeMenu = () => {
-    setMenuOpen(false)
-  }
+    setMenuOpen(false);
+  };
 
   useEffect(() => {
     if (navbarRef.current) {
-      setNavbarHeight(navbarRef.current.offsetHeight)
+      setNavbarHeight(navbarRef.current.offsetHeight);
     }
-  }, [])
+  }, []);
 
   return (
     <>
@@ -39,33 +39,53 @@ function Navbar() {
 
           <div
             className={`${
-              menuOpen ? 'block' : 'hidden'
+              menuOpen ? "block" : "hidden"
             } sm:flex sm:items-center sm:space-x-6`}
             id="navbar-menu"
           >
             <ul className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-6 text-sm font-medium">
               <li>
-                <Link to="/" className="text-gray-800 dark:text-gray-200 hover:underline" onClick={closeMenu}>
+                <Link
+                  to="/"
+                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  onClick={closeMenu}
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/about" className="text-gray-800 dark:text-gray-200 hover:underline" onClick={closeMenu}>
+                <Link
+                  to="/about"
+                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  onClick={closeMenu}
+                >
                   About
                 </Link>
               </li>
               <li>
-                <Link to="/projects" className="text-gray-800 dark:text-gray-200 hover:underline" onClick={closeMenu}>
+                <Link
+                  to="/projects"
+                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  onClick={closeMenu}
+                >
                   Projects
                 </Link>
               </li>
               <li>
-                <Link to="/resume" className="text-gray-800 dark:text-gray-200 hover:underline" onClick={closeMenu}>
+                <Link
+                  to="/resume"
+                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  onClick={closeMenu}
+                >
                   Resume
                 </Link>
               </li>
               <li>
-                <Link to="/contact" className="text-gray-800 dark:text-gray-200 hover:underline" onClick={closeMenu}>
+                <Link
+                  to="/contact"
+                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  onClick={closeMenu}
+                >
                   Contact
                 </Link>
               </li>
@@ -79,7 +99,7 @@ function Navbar() {
         <Outlet />
       </div>
     </>
-  )
+  );
 }
 
-export default Navbar
+export default Navbar;

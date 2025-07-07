@@ -1,19 +1,15 @@
 import * as THREE from "three";
-import Lenis from "lenis";
 import { gsap } from "gsap";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { FBXLoader } from "three/examples/jsm/Addons.js";
 import { OBJLoader } from "three/examples/jsm/Addons.js";
+import { modelDirection } from "three/tsl";
+
+gsap.registerPlugin(ScrollTrigger);
 
 // Exported function to initialize Three.js scene
 export const initScene = () => {
-  // Lenis scroll handling
-  const lenis = new Lenis();
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
   gsap.ticker.lagSmoothing(0);
 
   const navbarHeight = document.querySelector("nav")?.offsetHeight || 0;
@@ -158,7 +154,7 @@ export const initScene = () => {
       idlerAssembly.traverse(function (child) {
         if (child instanceof THREE.Mesh) {
           child.material = new THREE.MeshStandardMaterial({
-            color: 0x6e7897,
+            color: 0x666666,
             metalness: 0.5,
             roughness: 0.5,
             wireframe: true,
@@ -219,12 +215,12 @@ export const initScene = () => {
     0.1,
     100,
   );
-  camera.position.z = 3;
+  camera.position.z = 4;
   scene.add(camera);
 
   // OrbitControls for the camera
-  const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true;
+  // const controls = new OrbitControls(camera, canvas);
+  // controls.enableDamping = true;
 
   // Renderer setup
   const renderer = new THREE.WebGLRenderer({
@@ -238,6 +234,19 @@ export const initScene = () => {
   renderer.physicallyCorrectLights = true;
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 2.5;
+
+	// gsap scroll watchers
+	
+	gsap.to(camera.position, {
+		z: 15,
+		scrollTrigger: {
+			trigger: document.body,
+			start: "top top",
+			end: "+=1000", // scroll distance in pixels
+			scrub: true,
+			pin: true,     // keeps canvas fixed while scrolling
+		},
+	});
 
   // Animation loop (tick)
   const clock = new THREE.Clock();
@@ -253,7 +262,7 @@ export const initScene = () => {
     }
 
     // Update controls and render
-    controls.update();
+    // controls.update();
     renderer.render(scene, camera);
     window.requestAnimationFrame(tick);
   };

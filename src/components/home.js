@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import Lenis from "lenis";
+import GUI from "lil-gui";
 import { gsap } from "gsap";
 // import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -7,21 +7,17 @@ import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 // Exported function to initialize Three.js scene
 export const initScene = () => {
-  // Lenis scroll handling
-  const lenis = new Lenis();
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => {
-    lenis.raf(time * 1000);
-  });
+  const gui = new GUI();
+
   gsap.ticker.lagSmoothing(0);
-	gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger);
 
   // Canvas element
   const canvas = document.querySelector("canvas.webgl");
 
   // Scene setup
   const scene = new THREE.Scene();
-	scene.background = new THREE.Color(0x87CEEB);
+  scene.background = new THREE.Color(0x87ceeb);
 
   // Lighting setup
   // Ambient Light (soft light)
@@ -34,50 +30,52 @@ export const initScene = () => {
   directionalLight.castShadow = true; // Enable shadows
   scene.add(directionalLight);
 
-	const axesHelper = new THREE.AxesHelper( 5 );
-	scene.add( axesHelper );
+  const axesHelper = new THREE.AxesHelper(5);
+  scene.add(axesHelper);
 
-	const loader = new GLTFLoader();
-	let loadedObject;
-	
-	loader.load(
-		'meshes/laptop/scene.gltf',
-		function (obj) {
-			loadedObject = obj.scene;
-			loadedObject.position.set(0, -1.5, 0);
-			loadedObject.scale.set(0, 0, 0);
-			loadedObject.rotation.y = -Math.PI / 2;
-			loadedObject.traverse(function (child) {
-				if (child.material) {
-					child.material.metalness = 0.3
-					child.material.roughness = 0.2;
-					child.material.envMapIntensity = 2;
-					child.material.emissive = new THREE.Color(0x101010);
-				}
-				child.castShadow = true;
-				child.receiveShadow = true;
-			});
-			scene.add(loadedObject);
-			gsap.to(loadedObject.scale, {
-				x: 1,
-				y: 1,
-				z: 1,
-				scrollTrigger: {
-					trigger: canvas,
-					start: "top bottom",  // When the top of the canvas reaches the bottom of the viewport
-					end: "bottom top",    // When the bottom of the canvas reaches the top of the viewport
-					scrub: true,          // Smoothly animate the scale based on scroll
-					markers: false        // Optional: display scroll markers for debugging
-				}
-			});
-		},
-		function (xhr) {
-			console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-		},
-		function (error) {
-			console.error('An error happened: ', error);
-		}
-	);
+  const loader = new GLTFLoader();
+  let loadedObject;
+
+  loader.load(
+    "meshes/laptop/scene.gltf",
+    function (obj) {
+      loadedObject = obj.scene;
+      loadedObject.position.set(0, -1.5, 0);
+      loadedObject.scale.set(0, 0, 0);
+      loadedObject.rotation.y = -Math.PI / 2;
+  		gui.add(loadedObject.position, "y", -3, 3, 0.01);
+      loadedObject.traverse(function (child) {
+        if (child.material) {
+          child.material.metalness = 0.3;
+          child.material.roughness = 0.2;
+          child.material.envMapIntensity = 2;
+          child.material.emissive = new THREE.Color(0x101010);
+        }
+        child.castShadow = true;
+        child.receiveShadow = true;
+      });
+      scene.add(loadedObject);
+      gsap.to(loadedObject.scale, {
+        x: 1,
+        y: 1,
+        z: 1,
+        scrollTrigger: {
+          trigger: canvas,
+          start: "top bottom", // When the top of the canvas reaches the bottom of the viewport
+          end: "bottom top", // When the bottom of the canvas reaches the top of the viewport
+          scrub: true, // Smoothly animate the scale based on scroll
+          markers: false, // Optional: display scroll markers for debugging
+        },
+      });
+    },
+    function (xhr) {
+      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
+    },
+    function (error) {
+      console.error("An error happened: ", error);
+    },
+  );
+
 
   // Sizes for window resizing
   const sizes = {
@@ -157,7 +155,6 @@ export const initScene = () => {
   tick(); // Start the animation loop
 
   return () => {
-    lenis.destroy(); // Cleanup Lenis when component unmounts
     renderer.dispose(); // Dispose renderer
   };
 };
