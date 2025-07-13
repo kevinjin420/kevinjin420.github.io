@@ -14,7 +14,7 @@ const ProjectPage: React.FC = () => {
   }, []);
 
   return (
-    <div className='hide-scrollbar'>
+    <div className=''>
 			<Navbar />
 			<div id="loader" className="fixed top-0 left-0 w-screen h-screen bg-black text-white flex items-center justify-center text-2xl z-50">
         <PacmanLoader color="#ffffff" size={50} />

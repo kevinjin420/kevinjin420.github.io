@@ -1,9 +1,14 @@
 import * as THREE from "three";
 import GUI from "lil-gui";
 import { gsap } from "gsap";
-// import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { GLTFLoader } from "three/examples/jsm/Addons.js";
+import URDFLoader from "urdf-loader";
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+
+// Register .glb/.gltf support for the loading manager
+THREE.DefaultLoadingManager.addHandler(/\.gltf$/, new GLTFLoader());
+THREE.DefaultLoadingManager.addHandler(/\.glb$/, new GLTFLoader());
 
 // Exported function to initialize Three.js scene
 export const initScene = () => {
@@ -17,7 +22,8 @@ export const initScene = () => {
 
   // Scene setup
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x87ceeb);
+  // scene.background = new THREE.Color(0x87ceeb);
+  scene.background = new THREE.Color(0xdddddd);
 
   // Lighting setup
   // Ambient Light (soft light)
@@ -33,47 +39,49 @@ export const initScene = () => {
   const axesHelper = new THREE.AxesHelper(5);
   scene.add(axesHelper);
 
-  const loader = new GLTFLoader();
-  let loadedObject;
+  const manager = new THREE.LoadingManager();
+  const loader = new URDFLoader(manager);
+  loader.packages = {
+    mrover: '/urdf'
+  };
 
+  // Load using absolute path from web root
   loader.load(
-    "meshes/laptop/scene.gltf",
-    function (obj) {
-      loadedObject = obj.scene;
-      loadedObject.position.set(0, -1.5, 0);
-      loadedObject.scale.set(0, 0, 0);
-      loadedObject.rotation.y = -Math.PI / 2;
-  		gui.add(loadedObject.position, "y", -3, 3, 0.01);
-      loadedObject.traverse(function (child) {
-        if (child.material) {
-          child.material.metalness = 0.3;
-          child.material.roughness = 0.2;
-          child.material.envMapIntensity = 2;
-          child.material.emissive = new THREE.Color(0x101010);
+    '/urdf/arm/arm.urdf',
+    robot => {
+      robot.position.set(0, 0, 0);
+      robot.rotation.x = -Math.PI / 2;
+      robot.updateMatrixWorld();
+      scene.add(robot);
+      console.log(robot);
+
+      // Add GUI controls for joint angles
+      robot.traverse(obj => {
+        if (
+          obj.jointType === 'revolute' ||
+          obj.jointType === 'continuous' ||
+          obj.jointType === 'prismatic'
+        ) {
+          const name = obj.name || 'unnamed_joint';
+          const initialValue = typeof obj.jointValue === 'number' ? obj.jointValue : 0;
+          const min = obj.limit?.lower ?? -Math.PI;
+          const max = obj.limit?.upper ?? Math.PI;
+
+          const folder = gui.addFolder(name);
+          const paramObj = { value: initialValue };
+
+          folder.add(paramObj, 'value', min, max, 0.01)
+            .name(`${name} (${obj.jointType})`)
+            .onChange(value => {
+              obj.setJointValue(value);
+            });
         }
-        child.castShadow = true;
-        child.receiveShadow = true;
-      });
-      scene.add(loadedObject);
-      gsap.to(loadedObject.scale, {
-        x: 1,
-        y: 1,
-        z: 1,
-        scrollTrigger: {
-          trigger: canvas,
-          start: "top bottom", // When the top of the canvas reaches the bottom of the viewport
-          end: "bottom top", // When the bottom of the canvas reaches the top of the viewport
-          scrub: true, // Smoothly animate the scale based on scroll
-          markers: false, // Optional: display scroll markers for debugging
-        },
       });
     },
-    function (xhr) {
-      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-    },
-    function (error) {
-      console.error("An error happened: ", error);
-    },
+    undefined,
+    err => {
+      console.error('Failed to load URDF:', err);
+    }
   );
 
 
@@ -119,14 +127,17 @@ export const initScene = () => {
     75,
     sizes.width / sizes.height,
     0.1,
-    100,
+    1000,
   );
-  camera.position.z = 3;
+  camera.position.x = 50;
+  camera.position.y = 50;
+  camera.position.z = 100;
+  camera.lookAt(0, 0, 0);
   scene.add(camera);
 
   // OrbitControls for the camera
-  // const controls = new OrbitControls(camera, canvas);
-  // controls.enableDamping = true;
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
 
   // Renderer setup
   const renderer = new THREE.WebGLRenderer({

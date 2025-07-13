@@ -270,7 +270,6 @@ export const initScene = () => {
   tick(); // Start the animation loop
 
   return () => {
-    lenis.destroy(); // Cleanup Lenis when component unmounts
     renderer.dispose(); // Dispose renderer
   };
 };

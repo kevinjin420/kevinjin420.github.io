@@ -80,7 +80,9 @@ const RoverThree: React.FC = () => {
                 color: joint.name === 'd' || joint.name === 'e' ? 0x00ff00 : 0xffffff
               })
               mesh.scale.set(1, 1, 1)
-              mesh.position.set(0, 0, 0)
+              // mesh.position.set(0, 0, 0)
+              mesh.position.set(...joint.translation);
+              mesh.rotation.set(...joint.rotation);
               scene.add(mesh)
             }
           })
