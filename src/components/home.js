@@ -4,11 +4,15 @@ import { gsap } from "gsap";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import URDFLoader from "urdf-loader";
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
-// Register .glb/.gltf support for the loading manager
-THREE.DefaultLoadingManager.addHandler(/\.gltf$/, new GLTFLoader());
-THREE.DefaultLoadingManager.addHandler(/\.glb$/, new GLTFLoader());
+const defaultJointValues = {
+  chassis_to_arm_a: 24.14,
+  arm_a_to_arm_b: -0.785,
+  arm_b_to_arm_c: 1.91,
+  arm_c_to_arm_d: -1,
+  arm_d_to_arm_e: -1.6,
+  gripper_link: 0,
+}
 
 // Exported function to initialize Three.js scene
 export const initScene = () => {
@@ -47,13 +51,13 @@ export const initScene = () => {
 
   // Load using absolute path from web root
   loader.load(
-    '/urdf/arm/arm.urdf',
+    // '/urdf/arm/arm.urdf',
+    '/urdf/rover/rover.urdf',
     robot => {
-      robot.position.set(0, 0, 0);
-      robot.rotation.x = -Math.PI / 2;
-      robot.updateMatrixWorld();
-      scene.add(robot);
-      console.log(robot);
+      robot.position.set(0, -50, 0)
+      robot.rotation.x = -Math.PI / 2
+      robot.updateMatrixWorld()
+      scene.add(robot)
 
       // Add GUI controls for joint angles
       robot.traverse(obj => {
@@ -62,27 +66,37 @@ export const initScene = () => {
           obj.jointType === 'continuous' ||
           obj.jointType === 'prismatic'
         ) {
-          const name = obj.name || 'unnamed_joint';
-          const initialValue = typeof obj.jointValue === 'number' ? obj.jointValue : 0;
-          const min = obj.limit?.lower ?? -Math.PI;
-          const max = obj.limit?.upper ?? Math.PI;
+          const name = obj.name || 'unnamed_joint'
 
-          const folder = gui.addFolder(name);
-          const paramObj = { value: initialValue };
+          const initialValue =
+            typeof defaultJointValues[name] === 'number'
+              ? defaultJointValues[name]
+              : typeof obj.jointValue === 'number'
+                ? obj.jointValue
+                : 0
 
-          folder.add(paramObj, 'value', min, max, 0.01)
+          const min = obj.limit?.lower ?? -Math.PI
+          const max = obj.limit?.upper ?? Math.PI
+
+          const folder = gui.addFolder(name)
+          const paramObj = { value: initialValue }
+
+          obj.setJointValue(initialValue);
+
+          folder
+            .add(paramObj, 'value', min, max, 0.01)
             .name(`${name} (${obj.jointType})`)
             .onChange(value => {
-              obj.setJointValue(value);
-            });
+              obj.setJointValue(value)
+            })
         }
-      });
+      })
     },
     undefined,
     err => {
-      console.error('Failed to load URDF:', err);
-    }
-  );
+      console.error('Failed to load URDF:', err)
+    },
+  )
 
 
   // Sizes for window resizing
@@ -129,9 +143,9 @@ export const initScene = () => {
     0.1,
     1000,
   );
-  camera.position.x = 50;
-  camera.position.y = 50;
-  camera.position.z = 100;
+  camera.position.x = 100
+  camera.position.y = 50
+  camera.position.z = 100
   camera.lookAt(0, 0, 0);
   scene.add(camera);
 
