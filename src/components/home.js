@@ -16,7 +16,7 @@ const defaultJointValues = {
 
 // Exported function to initialize Three.js scene
 export const initScene = () => {
-  const gui = new GUI();
+  const gui = new GUI({width: 400});
 
   gsap.ticker.lagSmoothing(0);
   gsap.registerPlugin(ScrollTrigger);
@@ -40,7 +40,7 @@ export const initScene = () => {
   directionalLight.castShadow = true; // Enable shadows
   scene.add(directionalLight);
 
-  const axesHelper = new THREE.AxesHelper(5);
+  const axesHelper = new THREE.AxesHelper(50);
   scene.add(axesHelper);
 
   const manager = new THREE.LoadingManager();
