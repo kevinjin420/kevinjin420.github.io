@@ -151,7 +151,7 @@ export const initScene = () => {
 
   // OrbitControls for the camera
   const controls = new OrbitControls(camera, canvas);
-  controls.enableDamping = true;
+  // controls.enableDamping = true;
 
   // Renderer setup
   const renderer = new THREE.WebGLRenderer({
@@ -166,18 +166,28 @@ export const initScene = () => {
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 2.5;
 
-  // Animation loop (tick)
-  const clock = new THREE.Clock();
+  const clock = new THREE.Clock()
+  let timeSinceLastFrame = 0
+  const fpsLimit = 30
+  const frameInterval = 1 / fpsLimit
 
   const tick = () => {
-    const elapsedTime = clock.getElapsedTime();
-    // Update controls and render
-    // controls.update();
-    renderer.render(scene, camera);
-    window.requestAnimationFrame(tick);
+    requestAnimationFrame(tick);
+
+    const delta = clock.getDelta();
+    timeSinceLastFrame += delta;
+
+    while (timeSinceLastFrame >= frameInterval) {
+      timeSinceLastFrame -= frameInterval;
+
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    // console.log(camera.position);
   };
 
-  tick(); // Start the animation loop
+  tick();
 
   return () => {
     renderer.dispose(); // Dispose renderer
