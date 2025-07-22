@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-// Correctly import both the default and named exports
+// @ts-expect-error ts dumb
 import initScene, { animateArm } from "../components/home";
 import Loader from "react-spinners/PacmanLoader";
 import { gsap } from "gsap";

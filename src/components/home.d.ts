@@ -1,5 +1,5 @@
-// Declaring the 'home' module to provide type information for home.js (or home.tsx)
-declare module './home' {
-  // Export the 'initThreeScene' function type
-  export function initScene(): () => void;
+declare module "../components/home" {
+  const initScene: (loadingCallback?: () => void) => () => void;
+  function animateArm(targetName: string): void;
+  export { initScene as default, animateArm };
 }
