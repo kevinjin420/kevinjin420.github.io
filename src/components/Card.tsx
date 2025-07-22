@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 interface CardProps {
   imagePath: string;
-  imageAlign: 'left' | 'right';
+  imageAlign: "left" | "right";
   altText: string;
   text: string;
   title?: string;
@@ -23,20 +23,23 @@ const Card: React.FC<CardProps> = ({
 }) => {
   return (
     <div
-      className={`flex flex-col md:flex-row max-w-7xl min-h-100 ${
-        imageAlign === 'right' ? 'md:flex-row-reverse' : 'md:flex-row'
-      } items-center bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden mb-6`}
+      className={`flex flex-col md:flex-row max-w-7xl items-center bg-white dark:bg-gray-800 rounded-xl overflow-hidden 
+        ${imageAlign === "right" ? "md:flex-row-reverse" : "md:flex-row"} `}
     >
       {/* Image Section */}
       <img
         src={imagePath}
         alt={altText}
-        className="w-full md:w-1/2 object-cover"
+        className="w-full md:w-1/2 object-cover rounded-xl"
       />
 
       {/* Text Section */}
       <div className="w-full md:w-1/2 p-6">
-        {title && <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">{title}</h2>}
+        {title && (
+          <h2 className="text-2xl font-bold mb-2 text-gray-900 dark:text-white">
+            {title}
+          </h2>
+        )}
 
         {tags && tags.length > 0 && (
           <div className="flex flex-wrap gap-2 mb-4">

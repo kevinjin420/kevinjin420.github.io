@@ -3,7 +3,7 @@ import PDFViewer from "../components/PDFViewer"
 function Resume() {
 
     return (
-			<PDFViewer pdfUrl={'CV.pdf'} />
+			<PDFViewer pdfUrl={'Resume_v3.pdf'} />
     )
   }
   
