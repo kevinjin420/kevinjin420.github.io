@@ -1,7 +1,7 @@
 import React , { useEffect } from 'react';
 import Navbar from "../components/Navbar";
 import { PacmanLoader } from 'react-spinners';
-// @ts-expect-error stupid d.ts not recognized :)))))))))))))))
+// @ts-expect-error ts dumb
 import { initScene } from '../components/projects';
 
 const ProjectPage: React.FC = () => {

@@ -14,7 +14,7 @@ const startJointValues = {
   arm_b_to_arm_c: 0,
   arm_c_to_arm_d: 0,
   arm_d_to_arm_e: 0,
-  gripper_link: 40,
+  gripper_link: 8,
   left_bogie_to_front_left_wheel: wheelStart,
   left_bogie_to_center_left_wheel: wheelStart,
   left_rocker_to_back_left_wheel: wheelStart,
@@ -38,12 +38,50 @@ const endJointValues = {
   right_rocker_to_back_right_wheel: 0,
 };
 
-export const initScene = (loadingCallback) => {
+const jointTargets = {
+  default: endJointValues,
+  About: {
+    chassis_to_arm_a: 24,
+    arm_a_to_arm_b: -0.785,
+    arm_b_to_arm_c: 0.81,
+    arm_c_to_arm_d: 0.0538,
+    arm_d_to_arm_e: 0.1538,
+    gripper_link: 8,
+  },
+  Projects: {
+    chassis_to_arm_a: 24.14,
+    arm_a_to_arm_b: -0.7,
+    arm_b_to_arm_c: 1.5,
+    arm_c_to_arm_d: -0.8,
+    arm_d_to_arm_e: -1.2,
+    gripper_link: 0.5,
+  },
+  Resume: {
+    chassis_to_arm_a: 24.14,
+    arm_a_to_arm_b: -1.0,
+    arm_b_to_arm_c: 2.0,
+    arm_c_to_arm_d: -1.2,
+    arm_d_to_arm_e: -1.4,
+    gripper_link: 0.5,
+  },
+  Contact: {
+    chassis_to_arm_a: 24.14,
+    arm_a_to_arm_b: -1.2,
+    arm_b_to_arm_c: 2.3,
+    arm_c_to_arm_d: -1.5,
+    arm_d_to_arm_e: -1.7,
+    gripper_link: 0.5,
+  },
+};
+
+let rover = null;
+let jointTweenObject = {};
+
+export default function initScene(loadingCallback) {
   const gui = new GUI({ width: 400 });
   const cursor = { x: 0, y: 0 };
 
   gsap.ticker.lagSmoothing(0);
-  gsap.registerPlugin(ScrollTrigger);
 
   // Canvas element
   const canvas = document.querySelector("canvas.webgl");
@@ -100,17 +138,15 @@ export const initScene = (loadingCallback) => {
     mrover: "/urdf",
   };
 
-urdfLoader.load(
+  urdfLoader.load(
     "/urdf/rover/rover.urdf",
     (robot) => {
-      // --- SET INITIAL ROVER STATE ---
+      rover = robot;
       robot.position.set(-200, 0, 0); // Start position
       robot.rotation.x = -Math.PI / 2;
       robot.updateMatrixWorld();
       scene.add(robot);
-
-      // Create a copy of start values for the tweening object
-      const jointTweenObject = { ...startJointValues };
+      jointTweenObject = { ...startJointValues };
 
       // Set the robot's joints to their initial state
       for (const jointName in jointTweenObject) {
@@ -137,14 +173,14 @@ urdfLoader.load(
           // On each frame of the tween, update the actual robot joints
           for (const jointName in jointTweenObject) {
             if (robot.joints[jointName]) {
-              robot.joints[jointName].setJointValue(jointTweenObject[jointName]);
+              robot.joints[jointName].setJointValue(
+                jointTweenObject[jointName],
+              );
             }
           }
         },
       });
 
-
-      // --- GUI SETUP (No changes here) ---
       robot.traverse((obj) => {
         if (
           obj.jointType === "revolute" ||
@@ -156,14 +192,13 @@ urdfLoader.load(
             typeof endJointValues[name] === "number"
               ? endJointValues[name]
               : typeof obj.jointValue === "number"
-              ? obj.jointValue
-              : 0;
+                ? obj.jointValue
+                : 0;
           const min = obj.limit?.lower ?? -Math.PI;
           const max = obj.limit?.upper ?? Math.PI;
-          const folder = gui.addFolder(name);
           const paramObj = { value: initialValue };
           obj.setJointValue(initialValue);
-          folder
+          gui
             .add(paramObj, "value", min, max, 0.01)
             .name(`${name} (${obj.jointType})`)
             .onChange((value) => {
@@ -190,17 +225,14 @@ urdfLoader.load(
           // Use a LineBasicMaterial for the wireframe
           const lineMaterial = new THREE.LineBasicMaterial({
             color: 0x00ffff,
-            // --- CHANGES HERE ---
-            blending: THREE.NormalBlending, // Change from AdditiveBlending to remove glow
-            opacity: 0.35, // Make lines much less opaque
-            transparent: true, // Opacity requires this to be true
+            blending: THREE.NormalBlending,
+            opacity: 0.35, // adjust to control "brightness"
+            transparent: true,
             depthWrite: false,
           });
 
-          // Create LineSegments instead of Points
           const wireframe = new THREE.LineSegments(geometry, lineMaterial);
 
-          // Position and scale the wireframe ground
           wireframe.position.set(0, 0, 0);
           wireframe.rotation.x = -Math.PI / 2;
           wireframe.scale.set(20, 20, 20);
@@ -263,7 +295,6 @@ urdfLoader.load(
   // controls.enableDamping = true;
   // controls.target.set(0, 0, 0);
 
-  // A dummy object to act as the lookAt target, replacing `controls.target`
   const lookAtTarget = new THREE.Vector3(0, 0, 0);
 
   const startPosition = { x: 200, y: 150, z: 250 };
@@ -294,6 +325,9 @@ urdfLoader.load(
     z: endLookAt.z,
     duration: 3,
     ease: "power2.inOut",
+    onComplete: () => {
+      lookAtTarget.set(endLookAt.x, endLookAt.y, endLookAt.z);
+    }
   });
 
   const renderer = new THREE.WebGLRenderer({
@@ -313,18 +347,12 @@ urdfLoader.load(
   const tick = () => {
     const elapsedTime = clock.getElapsedTime();
 
-    // --- Tilting Logic ---
-    // Define how much the camera should tilt. Adjust this value for more/less sensitivity.
-    const tiltFactor = 0.2; 
-    
-    // Calculate the target rotation based on cursor position
+    const tiltFactor = 0.2;
     const targetTiltY = -cursor.x * tiltFactor; // Move cursor right -> rotate camera left
     const targetTiltX = -cursor.y * tiltFactor; // Move cursor up -> rotate camera up
-
     // Use a smoothing formula (lerp) to make the tilt feel natural
     cameraGroup.rotation.y += (targetTiltY - cameraGroup.rotation.y) * 0.01;
     cameraGroup.rotation.x += (targetTiltX - cameraGroup.rotation.x) * 0.01;
-    // --- End of Tilting Logic ---
 
     renderer.render(scene, camera);
     window.requestAnimationFrame(tick);
@@ -335,4 +363,28 @@ urdfLoader.load(
   return () => {
     renderer.dispose();
   };
-};
+}
+
+export function animateArm(targetName) {
+  console.log(targetName); // doesnt work lol
+  if (!rover || !jointTargets[targetName]) return;
+
+  for (const jointName in rover.joints) {
+    if (jointTweenObject.hasOwnProperty(jointName)) {
+      jointTweenObject[jointName] = rover.joints[jointName].jointValue;
+    }
+  }
+
+  gsap.to(jointTweenObject, {
+    ...jointTargets[targetName],
+    duration: 0.75,
+    ease: "power2.out",
+    onUpdate: () => {
+      for (const jointName in jointTweenObject) {
+        if (rover.joints[jointName]) {
+          rover.joints[jointName].setJointValue(jointTweenObject[jointName]);
+        }
+      }
+    },
+  });
+}

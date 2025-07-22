@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // @ts-expect-error - Assuming d.ts file is not recognized by your setup
-import { initScene } from "../components/home";
+import initScene from "../components/home"; // , { animateArm } 
 import Loader from "react-spinners/PacmanLoader";
 import { gsap } from "gsap";
 
@@ -68,7 +68,9 @@ const HomePage: React.FC = () => {
             <li key={link.name}>
               <a
                 href={link.href}
-                className="nav-button block w-96 text-center text-4xl text-gray-200 font-bold tracking-widest uppercase py-6 px-12 bg-black/30 border-2 border-cyan-400/30 rounded-lg hover:bg-cyan-400/20 hover:text-white transition-colors duration-300 opacity-0"
+                className="nav-button block w-96 text-center text-4xl text-gray-400 font-bold tracking-widest uppercase py-6 px-12 bg-black/30 border-2 border-cyan-400/30 rounded-lg hover:bg-cyan-400/20 hover:text-white transition-colors duration-300 opacity-0"
+                // onMouseEnter={() => animateArm(link.name)}
+                // onMouseLeave={() => animateArm('default')}
               >
                 {link.name}
               </a>
