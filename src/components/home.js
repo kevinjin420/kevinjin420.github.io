@@ -36,67 +36,8 @@ const endJointValues = {
   right_rocker_to_back_right_wheel: 0,
 };
 
-const jointTargets = {
-  default: endJointValues,
-  About: {
-    chassis_to_arm_a: 24,
-    arm_a_to_arm_b: -0.785,
-    arm_b_to_arm_c: 0.81,
-    arm_c_to_arm_d: 0.0538,
-    arm_d_to_arm_e: 0.1538,
-    gripper_link: 8,
-  },
-  Projects: {
-    chassis_to_arm_a: 24.14,
-    arm_a_to_arm_b: -0.7,
-    arm_b_to_arm_c: 1.5,
-    arm_c_to_arm_d: -0.8,
-    arm_d_to_arm_e: -1.2,
-    gripper_link: 0.5,
-  },
-  Resume: {
-    chassis_to_arm_a: 24.14,
-    arm_a_to_arm_b: -1.0,
-    arm_b_to_arm_c: 2.0,
-    arm_c_to_arm_d: -1.2,
-    arm_d_to_arm_e: -1.4,
-    gripper_link: 0.5,
-  },
-  Contact: {
-    chassis_to_arm_a: 24.14,
-    arm_a_to_arm_b: -1.2,
-    arm_b_to_arm_c: 2.3,
-    arm_c_to_arm_d: -1.5,
-    arm_d_to_arm_e: -1.7,
-    gripper_link: 0.5,
-  },
-};
-
 let rover = null;
 let jointTweenObject = {};
-
-export function animateArm(targetName) {
-  if (!rover || !jointTargets[targetName]) return;
-
-  for (const jointName in rover.joints) {
-    if (jointTweenObject.hasOwnProperty(jointName)) {
-      jointTweenObject[jointName] = rover.joints[jointName].jointValue;
-    }
-  }
-
-  gsap.to(jointTweenObject, {
-    ...jointTargets[targetName],
-    duration: 2,
-    ease: "power2.out",
-    onUpdate: () => {
-      for (const jointName in jointTweenObject) {
-        if (rover.joints[jointName]) {
-          rover.joints[jointName].setJointValue(jointTweenObject[jointName]);
-        }
-      }
-    },
-  });
-}
 
 export default function initScene(loadingCallback) {
   const gui = new GUI({ width: 400 });
@@ -139,20 +80,31 @@ export default function initScene(loadingCallback) {
       const scrollTimeline = gsap.timeline();
 
       // 1. Animate Rover Position
-      scrollTimeline.to(rover.position, { x: 20, y: 0, z: 0, ease: "power2.inOut" });
+      scrollTimeline.to(rover.position, {
+        x: 20,
+        y: 0,
+        z: 0,
+        ease: "power2.inOut",
+      });
 
       // 2. Animate Rover Joints
-      scrollTimeline.to(jointTweenObject, {
-        ...endJointValues,
-        ease: "power2.inOut",
-        onUpdate: () => {
-          for (const jointName in jointTweenObject) {
-            if (rover.joints[jointName]) {
-              rover.joints[jointName].setJointValue(jointTweenObject[jointName]);
+      scrollTimeline.to(
+        jointTweenObject,
+        {
+          ...endJointValues,
+          ease: "power2.inOut",
+          onUpdate: () => {
+            for (const jointName in jointTweenObject) {
+              if (rover.joints[jointName]) {
+                rover.joints[jointName].setJointValue(
+                  jointTweenObject[jointName],
+                );
+              }
             }
-          }
+          },
         },
-      }, "<");
+        "<",
+      );
 
       // 3. Animate Camera Position and LookAt
       const lookAtTarget = new THREE.Vector3(0, 0, 0);
@@ -165,21 +117,29 @@ export default function initScene(loadingCallback) {
       lookAtTarget.copy(startLookAt);
       camera.lookAt(lookAtTarget);
 
-      scrollTimeline.to(camera.position, {
-        x: endPosition.x,
-        y: endPosition.y,
-        z: endPosition.z,
-        ease: "power2.inOut",
-        onUpdate: () => camera.lookAt(lookAtTarget),
-      }, "<");
+      scrollTimeline.to(
+        camera.position,
+        {
+          x: endPosition.x,
+          y: endPosition.y,
+          z: endPosition.z,
+          ease: "power2.inOut",
+          onUpdate: () => camera.lookAt(lookAtTarget),
+        },
+        "<",
+      );
 
-      scrollTimeline.to(lookAtTarget, {
-        x: endLookAt.x,
-        y: endLookAt.y,
-        z: endLookAt.z,
-        ease: "power2.inOut",
-      }, "<");
-      
+      scrollTimeline.to(
+        lookAtTarget,
+        {
+          x: endLookAt.x,
+          y: endLookAt.y,
+          z: endLookAt.z,
+          ease: "power2.inOut",
+        },
+        "<",
+      );
+
       resolve(scrollTimeline);
     };
   });
@@ -192,26 +152,38 @@ export default function initScene(loadingCallback) {
     robot.rotation.x = -Math.PI / 2;
     robot.updateMatrixWorld();
     scene.add(robot);
-    
+
     jointTweenObject = { ...startJointValues }; // Set initial joint values
     for (const jointName in jointTweenObject) {
       if (robot.joints[jointName]) {
         robot.joints[jointName].setJointValue(jointTweenObject[jointName]);
       }
     }
-    
+
     // GUI setup for debugging (unchanged)
     robot.traverse((obj) => {
-      if (obj.jointType === "revolute" || obj.jointType === "continuous" || obj.jointType === "prismatic") {
+      if (
+        obj.jointType === "revolute" ||
+        obj.jointType === "continuous" ||
+        obj.jointType === "prismatic"
+      ) {
         const name = obj.name || "unnamed_joint";
-        const initialValue = typeof endJointValues[name] === "number" ? endJointValues[name] : (typeof obj.jointValue === "number" ? obj.jointValue : 0);
+        const initialValue =
+          typeof endJointValues[name] === "number"
+            ? endJointValues[name]
+            : typeof obj.jointValue === "number"
+              ? obj.jointValue
+              : 0;
         const min = obj.limit?.lower ?? -Math.PI;
         const max = obj.limit?.upper ?? Math.PI;
         const paramObj = { value: initialValue };
         obj.setJointValue(initialValue);
-        gui.add(paramObj, "value", min, max, 0.01).name(`${name} (${obj.jointType})`).onChange((value) => {
-          obj.setJointValue(value);
-        });
+        gui
+          .add(paramObj, "value", min, max, 0.01)
+          .name(`${name} (${obj.jointType})`)
+          .onChange((value) => {
+            obj.setJointValue(value);
+          });
       }
     });
   });
@@ -221,7 +193,13 @@ export default function initScene(loadingCallback) {
     const groundScene = collada.scene;
     groundScene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ffff, blending: THREE.NormalBlending, opacity: 0.35, transparent: true, depthWrite: false });
+        const lineMaterial = new THREE.LineBasicMaterial({
+          color: 0x00ffff,
+          blending: THREE.NormalBlending,
+          opacity: 0.35,
+          transparent: true,
+          depthWrite: false,
+        });
         const wireframe = new THREE.LineSegments(child.geometry, lineMaterial);
         wireframe.position.set(0, 0, 0);
         wireframe.rotation.x = -Math.PI / 2;
@@ -233,7 +211,12 @@ export default function initScene(loadingCallback) {
 
   const sizes = { width: window.innerWidth, height: window.innerHeight };
 
-  const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 1000);
+  const camera = new THREE.PerspectiveCamera(
+    75,
+    sizes.width / sizes.height,
+    0.1,
+    1000,
+  );
   cameraGroup.add(camera);
 
   const renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
@@ -255,7 +238,8 @@ export default function initScene(loadingCallback) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   };
   const handleDoubleClick = () => {
-    const fullscreenElement = document.fullscreenElement || document.webkitFullscreenElement;
+    const fullscreenElement =
+      document.fullscreenElement || document.webkitFullscreenElement;
     if (!fullscreenElement) {
       if (canvas.requestFullscreen) canvas.requestFullscreen();
       else if (canvas.webkitRequestFullscreen) canvas.webkitRequestFullscreen();

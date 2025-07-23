@@ -12,7 +12,7 @@ const ProjectPage: React.FC = () => {
 
         <div className="flex flex-col gap-12 sm:gap-16">
           <Card
-            imagePath="/rover_photo.png"
+            imagePath="/mrover-gui.png"
             imageAlign="left"
             altText="MRover"
             title="Michigan Mars Rover Team"

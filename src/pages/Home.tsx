@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 // @ts-expect-error ts dumb
-import initScene, { animateArm } from "../components/home";
+import initScene from "../components/home";
 import Loader from "react-spinners/PacmanLoader";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,8 +10,7 @@ gsap.registerPlugin(ScrollTrigger);
 const navLinks = [
   { name: "About", href: "/#/about" },
   { name: "Projects", href: "/#/projects" },
-  { name: "Resume", href: "/#/resume" },
-  { name: "Contact", href: "/#/contact" },
+  { name: "Resumé", href: "/#/resume" },
 ];
 
 const HomePage: React.FC = () => {
@@ -144,12 +143,7 @@ const HomePage: React.FC = () => {
       `}</style>
       {isLoading && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black">
-          <Loader
-            color={"#ffffff"}
-            loading={isLoading}
-            size={100}
-            aria-label="Loading Spinner"
-          />
+          <Loader color={"#ffffff"} size={70} />
         </div>
       )}
 
@@ -161,7 +155,7 @@ const HomePage: React.FC = () => {
           ref={text1Ref}
           className="absolute top-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-center md:text-left"
         >
-          <h1 className="homeTitle text-gray-200 text-6xl md:text-9xl font-bold">
+          <h1 className="homeTitle text-gray-200 text-7xl md:text-6xl font-bold">
             Kevin J.
           </h1>
         </div>
@@ -169,7 +163,7 @@ const HomePage: React.FC = () => {
           ref={text2Ref}
           className="absolute top-[52%] left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 text-center md:text-right w-max"
         >
-          <h1 className="homeTitle text-gray-200 text-5xl md:text-6xl">
+          <h1 className="homeTitle text-gray-200 text-5xl md:text-5xl">
             Welcome to my website
           </h1>
         </div>
@@ -205,8 +199,8 @@ const HomePage: React.FC = () => {
                 <a
                   href={link.href}
                   className="nav-button block w-80 md:w-96 text-center text-2xl md:text-4xl text-gray-400 font-bold tracking-widest uppercase py-4 md:py-6 px-8 md:px-12 bg-black/30 border-2 border-cyan-400/30 rounded-lg hover:bg-cyan-400/20 hover:text-white transition-colors duration-300"
-                  onMouseEnter={() => animateArm(link.name)}
-                  onMouseLeave={() => animateArm("default")}
+                  // onMouseEnter={() => animateArm(link.name)}
+                  // onMouseLeave={() => animateArm("default")}
                 >
                   {link.name}
                 </a>

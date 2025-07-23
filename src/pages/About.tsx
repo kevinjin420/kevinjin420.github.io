@@ -7,7 +7,7 @@ function About() {
       <img
         src="/banner28.png"
         alt="Banner"
-        className="w-full h-48 md:h-52 object-cover"
+        className="w-full object-center"
       />
       <div className="w-full max-w-4xl mx-auto p-4 sm:p-6 lg:p-8">
         <div className="flex flex-col gap-6">
