@@ -47,7 +47,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/"
-                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  className="text-gray-800 dark:text-gray-200 text-xl"
                   onClick={closeMenu}
                 >
                   Home
@@ -56,7 +56,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/about"
-                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  className="text-gray-800 dark:text-gray-200 text-xl"
                   onClick={closeMenu}
                 >
                   About
@@ -65,7 +65,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/projects"
-                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  className="text-gray-800 dark:text-gray-200 text-xl"
                   onClick={closeMenu}
                 >
                   Projects
@@ -74,7 +74,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/resume"
-                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  className="text-gray-800 dark:text-gray-200 text-xl"
                   onClick={closeMenu}
                 >
                   Resume
@@ -83,7 +83,7 @@ function Navbar() {
               <li>
                 <Link
                   to="/contact"
-                  className="text-gray-800 dark:text-gray-200 hover:underline"
+                  className="text-gray-800 dark:text-gray-200 text-xl"
                   onClick={closeMenu}
                 >
                   Contact

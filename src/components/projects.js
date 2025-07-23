@@ -76,7 +76,7 @@ export const initScene = () => {
   let idlerAssembly;
 
   loader.load(
-    "meshes/vector/toolhead.obj",
+    "voron/toolhead.obj",
     function (obj) {
       vectorToolhead = obj;
       vectorToolhead.position.set(0, -5.5, -0.55);
@@ -104,7 +104,7 @@ export const initScene = () => {
   );
 
   loader.load(
-    "meshes/vector/fan_hub.obj",
+    "voron/fan_hub.obj",
     function (obj) {
       fanHub = obj;
 
@@ -145,7 +145,7 @@ export const initScene = () => {
   );
 
   loader.load(
-    "meshes/vector/gantry.obj",
+    "voron/gantry.obj",
     function (obj) {
       idlerAssembly = obj;
       idlerAssembly.position.set(0, -5.5, -0.55);

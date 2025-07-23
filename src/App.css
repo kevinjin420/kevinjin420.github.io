@@ -1,1 +1,7 @@
+@import url('https://fonts.cdnfonts.com/css/neue-haas-grotesk-display-pro');
 @import "tailwindcss";
+
+.homeTitle {
+    text-transform: uppercase;
+    font-family: 'Neue Haas Grotesk Display Pro', sans-serif;
+}
