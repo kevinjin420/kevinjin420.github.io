@@ -3,7 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber'
 import * as THREE from 'three'
 import { useScroll } from '../../hooks/use-scroll'
 import { lerp } from '../../lib/maths'
-import { ALL_SECTIONS, BRANCH_SPACING } from './SceneConfig'
+import { ALL_SECTIONS, BRANCHES, BRANCH_SPACING } from './SceneConfig'
 import { getScrollState } from './utils'
 
 export function Stars({ count = 8000 }) {
@@ -75,6 +75,79 @@ export function Atmosphere() {
   }, [scene])
 
   return null
+}
+
+const GEOMETRIES = [
+  'icosahedron',
+  'octahedron',
+  'dodecahedron',
+  'torus',
+  'torusKnot',
+  'box',
+] as const
+
+function SpinningObject({
+  position,
+  color,
+  geometry,
+  speed,
+}: {
+  position: [number, number, number]
+  color: string
+  geometry: typeof GEOMETRIES[number]
+  speed: number
+}) {
+  const ref = useRef<THREE.Mesh>(null)
+
+  useFrame((_state, delta) => {
+    if (ref.current) {
+      ref.current.rotation.x += delta * 0.15 * speed
+      ref.current.rotation.y += delta * 0.25 * speed
+    }
+  })
+
+  return (
+    <mesh ref={ref} position={position}>
+      {geometry === 'icosahedron' && <icosahedronGeometry args={[80, 1]} />}
+      {geometry === 'octahedron' && <octahedronGeometry args={[80, 0]} />}
+      {geometry === 'dodecahedron' && <dodecahedronGeometry args={[80, 0]} />}
+      {geometry === 'torus' && <torusGeometry args={[65, 20, 16, 32]} />}
+      {geometry === 'torusKnot' && <torusKnotGeometry args={[50, 16, 64, 16]} />}
+      {geometry === 'box' && <boxGeometry args={[100, 100, 100]} />}
+      <meshStandardMaterial color={color} wireframe />
+    </mesh>
+  )
+}
+
+export function SectionObjects() {
+  const objects: { position: [number, number, number]; color: string; geometry: typeof GEOMETRIES[number]; speed: number }[] = []
+
+  let idx = 0
+  for (const branch of BRANCHES) {
+    if (branch.name === 'Intro') {
+      idx += branch.sections.length
+      continue
+    }
+    for (const section of branch.sections) {
+      if (!section.model) {
+        objects.push({
+          position: [section.lookAt.x, section.lookAt.y, section.lookAt.z],
+          color: branch.accent,
+          geometry: GEOMETRIES[idx % GEOMETRIES.length],
+          speed: 0.8 + (idx % 3) * 0.4,
+        })
+      }
+      idx++
+    }
+  }
+
+  return (
+    <>
+      {objects.map((obj, i) => (
+        <SpinningObject key={i} {...obj} />
+      ))}
+    </>
+  )
 }
 
 export function Stage() {

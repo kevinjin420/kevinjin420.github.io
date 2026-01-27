@@ -7,7 +7,7 @@ import { getAllModels } from './SceneConfig'
 import { useScroll } from '../../hooks/use-scroll'
 import { getScrollState } from './utils'
 import { URDFModel } from './URDFModel'
-import { Stars, Atmosphere, Stage } from './Environment'
+import { Stars, Atmosphere, Stage, SectionObjects } from './Environment'
 import { CameraController } from './Camera'
 import { LoadingOverlay, ProgressIndicator, useIsMobile } from './UI'
 
@@ -83,6 +83,7 @@ function Scene({ isMobile, onAllModelsLoaded }: { isMobile: boolean; onAllModels
           </group>
         ))}
         <Stage />
+        <SectionObjects />
       </Suspense>
 
       <EffectComposer enableNormalPass={false} multisampling={4}>
