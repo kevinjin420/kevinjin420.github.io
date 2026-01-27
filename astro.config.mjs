@@ -3,7 +3,7 @@ import react from '@astrojs/react';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://kevinjin420.github.io',
+  site: 'https://kevinjin.dev',
   base: '/',
   outDir: './dist',
   publicDir: './public',
