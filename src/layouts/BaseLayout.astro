@@ -3,9 +3,17 @@ import '@/styles/global.css';
 
 interface Props {
   title?: string;
+  description?: string;
+  image?: string;
 }
 
-const { title = 'Kevin Jin' } = Astro.props;
+const {
+  title = 'Kevin Jin',
+  description = 'Kevin Jin - Computer Engineering & Data Science at University of Michigan',
+  image = '/og.png',
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site ?? 'https://kevinjin.dev');
 ---
 
 <!DOCTYPE html>
@@ -13,9 +21,19 @@ const { title = 'Kevin Jin' } = Astro.props;
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Kevin Jin - Computer Engineering & Data Science at University of Michigan" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+  <link rel="canonical" href={canonicalURL} />
   <title>{title}</title>
+  <meta name="description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonicalURL} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={image} />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content={title} />
+  <meta name="twitter:description" content={description} />
+  <meta name="twitter:image" content={image} />
 
   <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" media="print" onload="this.media='all'" />
