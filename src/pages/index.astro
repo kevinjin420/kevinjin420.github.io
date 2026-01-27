@@ -1,0 +1,228 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SceneManager } from "@/components/home/SceneManager";
+import { BRANCHES } from "@/components/home/SceneConfig";
+
+const ABOUT_IMAGES: Record<string, string> = {
+  hardware: '/wiring_photo.jpg',
+  mrover: '/rover_photo.png',
+  cycling: '/bike_photo.jpg',
+  linux: '/mint_desktop.png',
+};
+
+const PROJECT_TAGS: Record<string, string[]> = {
+  'mrover-gui': ['Vue.js', 'JavaScript', 'Bootstrap', 'Python', 'C++'],
+  'fpv-drone': ['Soldering', 'CAD', 'LUA', 'Video Production'],
+};
+
+const PROJECT_IMAGES: Record<string, string> = {
+  'mrover-gui': '/mrover-gui.png',
+  'fpv-drone': '/drone_photo.jpg',
+};
+
+const PROJECT_LINKS: Record<string, string> = {
+  'mrover-gui': 'https://github.com/umrover/mrover-ros2/',
+};
+---
+
+<BaseLayout title="Kevin Jin">
+  <div class="home-content-wrapper relative" style="clip-path: inset(0); font-family: 'Inter', system-ui, sans-serif;">
+    <SceneManager client:only="react" />
+
+    <main class="relative z-1 text-white">
+      {BRANCHES.map((branch) => (
+        <div
+          class="branch-wrapper relative"
+          data-branch={branch.name}
+          style={`height: calc(${branch.sections.length} * 100dvh); --branch-color: ${branch.color}; --branch-accent: ${branch.accent};`}
+        >
+          <div class="sticky top-0 h-dvh overflow-hidden flex flex-col">
+            <div class="branch-slides flex flex-1 items-stretch">
+              {branch.sections.map((section) => (
+                <section
+                  class={`min-w-full w-full h-dvh flex flex-col p-0 px-16 pb-16 box-border pointer-events-none shrink-0 ${
+                    section.name === 'hero'
+                      ? 'justify-center items-center'
+                      : section.name === 'welcome'
+                        ? 'justify-center items-center'
+                        : section.name === 'contact'
+                          ? 'justify-center items-center'
+                          : 'justify-end items-end'
+                  }`}
+                  data-id={section.name}
+                >
+                  {section.name === 'hero' ? (
+                    <div class="flex flex-col items-center">
+                      <h1 class="intro-title text-white m-0 leading-none tracking-[0.02em] text-center flex flex-col items-center select-none uppercase font-bold" style="font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 12vw, 8rem);">
+                        {(section.label || '').split(' ').map((word: string, wordIndex: number) => (
+                          <div class="block overflow-hidden" style={`--word-index: ${wordIndex}`}>
+                            {word.split('').map((char: string, charIndex: number) => (
+                              <span class="char inline-block" style={`--char-index: ${charIndex}; --word-index: ${wordIndex}`}>
+                                {char}
+                              </span>
+                            ))}
+                          </div>
+                        ))}
+                      </h1>
+                    </div>
+                  ) : section.name === 'welcome' ? (
+                    <div class="card max-w-[500px] p-6 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col text-center" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
+                      <p class="text-xl leading-relaxed text-white/90 m-0">{section.label}</p>
+                      <p class="text-base leading-relaxed text-white/60 mt-4 m-0">Computer Engineering & Data Science at the University of Michigan</p>
+                    </div>
+                  ) : section.name === 'contact' ? (
+                    <div class="card max-w-[500px] p-8 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col items-center" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
+                      <h2 class="text-3xl font-semibold uppercase leading-tight mb-6" style={`color: var(--branch-accent, #e94560);`}>Get in Touch</h2>
+                      <div class="flex flex-wrap justify-center gap-6 mb-6">
+                        <a href="https://www.linkedin.com/in/kevinjin0420/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white transition-colors text-lg">LinkedIn</a>
+                        <a href="https://github.com/kevinjin420" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white transition-colors text-lg">GitHub</a>
+                        <a href="mailto:kevinjin0420@gmail.com" class="text-white/70 hover:text-white transition-colors text-lg">Email</a>
+                      </div>
+                      <p class="text-white/50 text-sm">(240) 756-8098</p>
+                      <a href="/resume" class="mt-4 px-6 py-2 border border-white/30 rounded-lg text-white/80 hover:text-white hover:border-white/60 transition-all text-sm uppercase tracking-wider">View Resume</a>
+                    </div>
+                  ) : ABOUT_IMAGES[section.name] ? (
+                    <div class="card w-[600px] min-h-[180px] p-0 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-row overflow-hidden" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
+                      <img src={ABOUT_IMAGES[section.name]} alt={section.label} class="w-[200px] h-auto object-cover shrink-0" />
+                      <div class="p-6 flex flex-col justify-center">
+                        <h2 class="text-2xl font-semibold uppercase leading-tight mb-3" style={`color: var(--branch-accent, #0f94d2);`}>{section.label}</h2>
+                        <p class="text-base leading-relaxed text-white/80 m-0">{section.description}</p>
+                      </div>
+                    </div>
+                  ) : PROJECT_IMAGES[section.name] ? (
+                    <div class="card w-[600px] min-h-[180px] p-0 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-row overflow-hidden" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
+                      <img src={PROJECT_IMAGES[section.name]} alt={section.label} class="w-[200px] h-auto object-cover shrink-0" />
+                      <div class="p-6 flex flex-col justify-center">
+                        <h2 class="text-2xl font-semibold uppercase leading-tight mb-2" style={`color: var(--branch-accent, #e94560);`}>{section.label}</h2>
+                        {PROJECT_TAGS[section.name] && (
+                          <div class="flex flex-wrap gap-2 mb-3">
+                            {PROJECT_TAGS[section.name].map((tag: string) => (
+                              <span class="text-xs px-2 py-1 rounded bg-white/10 text-white/70">{tag}</span>
+                            ))}
+                          </div>
+                        )}
+                        <p class="text-base leading-relaxed text-white/80 m-0">{section.description}</p>
+                        {PROJECT_LINKS[section.name] && (
+                          <a href={PROJECT_LINKS[section.name]} target="_blank" rel="noopener noreferrer" class="mt-3 text-sm text-white/60 hover:text-white transition-colors underline">View on GitHub</a>
+                        )}
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="card w-[500px] min-h-[180px] p-6 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
+                      <h2 class="text-3xl font-semibold uppercase leading-tight mb-4" style={`color: var(--branch-accent, #e94560);`}>{section.label}</h2>
+                      {section.description && <p class="text-xl leading-relaxed text-white/90 m-0">{section.description}</p>}
+                    </div>
+                  )}
+                </section>
+              ))}
+            </div>
+          </div>
+        </div>
+      ))}
+    </main>
+
+    <script>
+      function clamp(min: number, input: number, max: number) {
+        return Math.max(min, Math.min(input, max))
+      }
+
+      function lerp(start: number, end: number, factor: number) {
+        return start + (end - start) * factor
+      }
+
+      document.querySelectorAll('.branch-wrapper').forEach((wrapper) => {
+        const slides = wrapper.querySelector('.branch-slides') as HTMLElement
+        const sections = slides?.querySelectorAll('section') as NodeListOf<HTMLElement>
+
+        if (!slides || !sections || sections.length <= 1) return
+
+        let currentX = 0
+        let targetX = 0
+        const damping = 0.18
+
+        const updateTarget = () => {
+          const rect = wrapper.getBoundingClientRect()
+          const wrapperHeight = wrapper.clientHeight
+          const vh = window.visualViewport?.height || window.innerHeight
+
+          const scrolledIntoWrapper = -rect.top
+          const scrollableDistance = wrapperHeight - vh
+
+          let progress = scrolledIntoWrapper / scrollableDistance
+          progress = clamp(0, progress, 1)
+
+          const slidesWidth = slides.scrollWidth
+          const maxX = slidesWidth - window.innerWidth
+          targetX = progress * maxX
+        }
+
+        const animate = () => {
+          currentX = lerp(currentX, targetX, damping)
+          slides.style.transform = `translateX(${-currentX}px)`
+          requestAnimationFrame(animate)
+        }
+
+        window.addEventListener('scroll', updateTarget, { passive: true })
+        window.addEventListener('resize', updateTarget)
+        updateTarget()
+        animate()
+      })
+    </script>
+  </div>
+</BaseLayout>
+
+<style>
+  :global(html),
+  :global(body) {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+  }
+
+  :global(body) {
+    touch-action: pan-x pan-y;
+  }
+
+  .char {
+    opacity: 0;
+    transform: translateY(100%) rotateX(-90deg);
+    animation: char-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: calc(0.4s + var(--word-index) * 0.3s + var(--char-index) * 0.05s);
+  }
+
+  @keyframes char-reveal {
+    0% {
+      opacity: 0;
+      transform: translateY(100%) rotateX(-90deg);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) rotateX(0deg);
+    }
+  }
+
+  @media (max-width: 800px) {
+    section {
+      padding: 0 1.5rem 2rem 1.5rem !important;
+      align-items: flex-start !important;
+    }
+
+    .card {
+      width: calc(100vw - 3rem) !important;
+      max-width: none;
+      flex-direction: column !important;
+    }
+
+    .card img {
+      width: 100% !important;
+      max-height: 200px;
+    }
+
+    .card h2 {
+      font-size: 1.4rem !important;
+    }
+
+    .card p {
+      font-size: 1rem !important;
+    }
+  }
+</style>

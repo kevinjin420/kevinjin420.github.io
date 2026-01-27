@@ -1,0 +1,40 @@
+@import "tailwindcss";
+
+html {
+  font-size: 16px;
+}
+
+@theme {
+  --color-brand-primary: #1a1a2e;
+  --color-brand-accent: #e94560;
+  --color-brand-surface: #16213e;
+  --color-brand-text: #eaeaea;
+
+  --font-family-inter: Inter, system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', monospace;
+}
+
+body, h1, h2, h3, h4, h5, h6, p, blockquote, pre, hr, dl, dd, ol, ul, figure {
+  margin: 0;
+  padding: 0;
+}
+
+img {
+  max-width: 100%;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes char-reveal {
+  0% {
+    opacity: 0;
+    transform: translateY(100%) rotateX(-90deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
