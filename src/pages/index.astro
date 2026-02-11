@@ -1,8 +1,46 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+
+const docs = await getCollection("docs");
+
+const dirs: Record<string, Record<string, string>> = {};
+const rootFiles: Record<string, string> = {};
+
+const dirNames = new Set<string>();
+for (const entry of docs) {
+  const parts = entry.id.split("/");
+  if (parts.length > 1) dirNames.add(parts[0]);
+}
+
+for (const entry of docs) {
+  const id = entry.id;
+  const { title, description } = entry.data;
+  const parts = id.split("/");
+
+  if (parts.length > 1) {
+    const dir = parts[0];
+    const slug = parts.slice(1).join("/");
+    if (slug === "index") continue;
+    if (!dirs[dir]) dirs[dir] = {};
+    const lines = [title, "---"];
+    if (description) lines.push(description);
+    lines.push("", `  open /${dir}/${slug}/`);
+    dirs[dir][`${slug}.md`] = lines.join("\n");
+  } else if (parts[0] !== "index" && !dirNames.has(parts[0])) {
+    const slug = parts[0];
+    const lines = [title, "---"];
+    if (description) lines.push(description);
+    lines.push("", `  open /${slug}/`);
+    rootFiles[`${slug}.md`] = lines.join("\n");
+  }
+}
+
+const dynamicFs = JSON.stringify({ dirs, rootFiles });
 ---
 
 <BaseLayout title="Kevin Jin">
+  <script type="application/json" id="fs-data" set:html={dynamicFs} />
   <div id="terminal" tabindex="0">
     <div id="output"></div>
     <div id="input-line">
@@ -67,57 +105,11 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 </style>
 
 <script>
+  const dynamicFs = JSON.parse(document.getElementById("fs-data")!.textContent!);
+
   const filesystem: Record<string, any> = {
-    "about.txt": [
-      "Hey, I'm Kevin Jin.",
-      "Computer Engineering & Data Science student at the University of Michigan.",
-      "I build robots, fly drones, and write software.",
-      "",
-      "Currently Teleoperations Lead for the Michigan Mars Rover team,",
-      "where I develop real-time control systems for competition rovers.",
-    ].join("\n"),
-    "blog": {
-      "hello-world.txt": [
-        "Hello World",
-        "---",
-        "First post on the new site. I rebuilt this site using Astro Starlight",
-        "as a lightweight, content-focused platform.",
-        "",
-        "  open /blog/hello-world/",
-      ].join("\n"),
-    },
-    "projects": {
-      "mrover.txt": [
-        "Michigan Mars Rover Team",
-        "---",
-        "Teleoperations Lead -- real-time rover control system.",
-        "Responsible for the frontend and backend systems that allow",
-        "operators to control the rover during competition.",
-        "",
-        "  open /projects/mrover-gui/",
-      ].join("\n"),
-      "fpv-drone.txt": [
-        "FPV Drone Build",
-        "---",
-        "Custom 5-inch FPV drone built from scratch.",
-        "Soldering, Fusion360 housings, flight software config",
-        "via serial ports and LUA scripting.",
-        "",
-        "  open /projects/fpv-drone/",
-      ].join("\n"),
-    },
-    "resume.txt": [
-      "Resume",
-      "---",
-      "Download: open resume.pdf",
-    ].join("\n"),
-    "links.txt": [
-      "Links",
-      "---",
-      "GitHub:   https://github.com/kevinjin420",
-      "LinkedIn: https://www.linkedin.com/in/kevinjin0420/",
-      "Email:    kevinjin0420@gmail.com",
-    ].join("\n"),
+    ...dynamicFs.dirs,
+    ...dynamicFs.rootFiles,
   };
 
   let cwd = "~";
@@ -330,9 +322,14 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
           const resolved = resolvePath(target);
           const node = getNode(resolved);
           if (typeof node === "string") {
-            const urlMatch = node.match(/open (\/\S+)/);
+            const urlMatch = node.match(/open ((?:\/|https?:\/\/)\S+)/);
             if (urlMatch) {
-              window.location.href = urlMatch[1];
+              const url = urlMatch[1];
+              if (url.startsWith("http")) {
+                window.open(url, "_blank");
+              } else {
+                window.location.href = url;
+              }
             } else {
               appendOutput(`open: ${escapeHtml(target)}: no link found in file`);
             }
@@ -393,15 +390,29 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
 
   const commands = ["help", "ls", "cd", "cat", "open", "pwd", "clear", "whoami", "neofetch", "fastfetch"];
 
+  let tabMatches: string[] = [];
+  let tabIndex = -1;
+  let tabPrefix = "";
+
   function tabComplete() {
     const value = inputEl.value;
     const parts = value.split(/\s+/);
 
+    if (tabMatches.length > 0 && tabIndex >= 0) {
+      tabIndex = (tabIndex + 1) % tabMatches.length;
+      inputEl.value = tabMatches[tabIndex];
+      return;
+    }
+
     if (parts.length <= 1) {
       const prefix = parts[0];
-      const matches = commands.filter((c) => c.startsWith(prefix));
+      const matches = commands.filter((c) => c.startsWith(prefix)).sort();
       if (matches.length === 1) {
         inputEl.value = matches[0] + " ";
+      } else if (matches.length > 1) {
+        tabMatches = matches.map((m) => m + " ");
+        tabIndex = 0;
+        inputEl.value = tabMatches[0];
       }
       return;
     }
@@ -418,14 +429,30 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     const node = getNode(resolved);
     if (node == null || typeof node === "string") return;
 
-    const entries = Object.keys(node).filter((e) => e.startsWith(prefix));
-    if (entries.length === 1) {
-      const match = entries[0];
-      const isDir = typeof node[match] === "object";
-      const completed = dirPart + match + (isDir ? "/" : "");
-      parts[parts.length - 1] = completed;
+    const entries = Object.keys(node).filter((e) => e.startsWith(prefix)).sort();
+    const completions = entries.map((e) => {
+      const isDir = typeof node[e] === "object";
+      return dirPart + e + (isDir ? "/" : "");
+    });
+
+    if (completions.length === 1) {
+      const match = completions[0];
+      const isDir = match.endsWith("/");
+      parts[parts.length - 1] = match;
       inputEl.value = parts.join(" ") + (isDir ? "" : " ");
+    } else if (completions.length > 1) {
+      tabMatches = completions.map((c) => {
+        const before = parts.slice(0, -1).join(" ");
+        return before + (before ? " " : "") + c;
+      });
+      tabIndex = 0;
+      inputEl.value = tabMatches[0];
     }
+  }
+
+  function resetTabState() {
+    tabMatches = [];
+    tabIndex = -1;
   }
 
   let reverseSearchActive = false;
@@ -504,7 +531,10 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     if (e.key === "Tab") {
       e.preventDefault();
       tabComplete();
-    } else if (e.key === "Enter") {
+      return;
+    }
+    resetTabState();
+    if (e.key === "Enter") {
       e.preventDefault();
       handleSubmit();
     } else if (e.key === "ArrowUp") {

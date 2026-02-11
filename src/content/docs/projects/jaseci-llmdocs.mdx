@@ -1,0 +1,21 @@
+---
+title: Jaseci LLM Docs
+description: AI-powered documentation generation and validation pipeline for the Jac language.
+---
+
+## Overview
+
+Built a documentation generation pipeline that compresses 100+ MB of Jac language documentation into a validated 21 KB reference using deterministic extraction and a single LLM assembly pass. Achieves 100% code block validation rate with zero hallucinated syntax.
+
+## Work
+
+- Designed a 4-stage pipeline (fetch, extract, assemble, validate) with subprocess isolation and WebSocket progress broadcasting
+- Built a deterministic extractor that classifies code blocks across 26 construct types using Lark AST parsing with regex fallback, scoring and selecting the best 3 examples per construct
+- Implemented validation against 39 critical syntax patterns with `jac check` compiler verification and cross-referencing against official docs
+- Developed a FastAPI + React dashboard with Monaco editor for real-time pipeline execution and source management
+
+## Stack
+
+Python, FastAPI, React, Lark, OpenRouter API (Claude), SQLite, WebSockets
+
+[Source](https://github.com/jaseci-labs/jaseci-llmdocs)

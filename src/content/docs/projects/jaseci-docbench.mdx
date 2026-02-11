@@ -1,0 +1,21 @@
+---
+title: Jaseci DocBench
+description: LLM benchmarking platform for evaluating code generation in the Jac language.
+---
+
+## Overview
+
+Built an LLM benchmarking platform that evaluates how well language models generate code in Jac, measuring the impact of documentation quality on code generation accuracy. Features concurrent multi-model testing, a public leaderboard, and a multi-stage evaluation pipeline with compiler validation.
+
+## Work
+
+- Designed and implemented a multi-stage evaluation pipeline: required element detection, forbidden pattern checking, syntax analysis, `jac check` compiler validation, and functional test execution
+- Built concurrent batch processing with ThreadPoolExecutor (20 workers, 45 tests/batch) and real-time WebSocket progress updates
+- Implemented a public benchmarking system with rate limiting, leaderboard submissions, and community rankings
+- Developed the admin console for test CRUD, bulk import/export, model management, and user role administration with GitHub OAuth
+
+## Stack
+
+Jac, PostgreSQL, React, Docker, OpenRouter API, FastAPI, WebSockets
+
+[Source](https://github.com/kevinjin420/docbench)
