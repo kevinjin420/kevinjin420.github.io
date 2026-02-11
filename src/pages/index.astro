@@ -428,7 +428,79 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
     }
   }
 
+  let reverseSearchActive = false;
+  let reverseSearchQuery = "";
+  let reverseSearchIndex = -1;
+
+  function updateReverseSearchPrompt() {
+    const match = reverseSearchIndex >= 0 ? history[reverseSearchIndex] : "";
+    promptEl.innerHTML = `(reverse-i-search)\`${escapeHtml(reverseSearchQuery)}': `;
+    inputEl.value = match;
+  }
+
+  function exitReverseSearch(keepValue: boolean) {
+    reverseSearchActive = false;
+    const val = keepValue && reverseSearchIndex >= 0 ? history[reverseSearchIndex] : "";
+    reverseSearchQuery = "";
+    reverseSearchIndex = -1;
+    updatePrompt();
+    inputEl.value = val;
+  }
+
+  function searchHistory(query: string, startFrom: number): number {
+    for (let i = startFrom; i >= 0; i--) {
+      if (history[i].includes(query)) return i;
+    }
+    return -1;
+  }
+
   inputEl.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (reverseSearchActive) {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        exitReverseSearch(false);
+        return;
+      }
+      if (e.key === "Enter") {
+        e.preventDefault();
+        const val = reverseSearchIndex >= 0 ? history[reverseSearchIndex] : "";
+        exitReverseSearch(false);
+        inputEl.value = val;
+        handleSubmit();
+        return;
+      }
+      if (e.ctrlKey && e.key === "r") {
+        e.preventDefault();
+        const next = reverseSearchIndex > 0
+          ? searchHistory(reverseSearchQuery, reverseSearchIndex - 1)
+          : -1;
+        if (next >= 0) reverseSearchIndex = next;
+        updateReverseSearchPrompt();
+        return;
+      }
+      if (e.ctrlKey && e.key === "c") {
+        e.preventDefault();
+        exitReverseSearch(false);
+        return;
+      }
+      if (e.key === "Backspace") {
+        e.preventDefault();
+        reverseSearchQuery = reverseSearchQuery.slice(0, -1);
+        reverseSearchIndex = searchHistory(reverseSearchQuery, history.length - 1);
+        updateReverseSearchPrompt();
+        return;
+      }
+      if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        reverseSearchQuery += e.key;
+        reverseSearchIndex = searchHistory(reverseSearchQuery, history.length - 1);
+        updateReverseSearchPrompt();
+        return;
+      }
+      exitReverseSearch(true);
+      return;
+    }
+
     if (e.key === "Tab") {
       e.preventDefault();
       tabComplete();
@@ -450,6 +522,43 @@ import BaseLayout from "@/layouts/BaseLayout.astro";
         historyIndex = history.length;
         inputEl.value = "";
       }
+    } else if (e.ctrlKey && e.key === "l") {
+      e.preventDefault();
+      outputEl.innerHTML = "";
+    } else if (e.ctrlKey && e.key === "r") {
+      e.preventDefault();
+      reverseSearchActive = true;
+      reverseSearchQuery = "";
+      reverseSearchIndex = -1;
+      updateReverseSearchPrompt();
+    } else if (e.ctrlKey && e.key === "c") {
+      e.preventDefault();
+      appendOutput(`${renderPrompt()}${escapeHtml(inputEl.value)}^C`);
+      inputEl.value = "";
+      scrollToBottom();
+    } else if (e.ctrlKey && e.key === "u") {
+      e.preventDefault();
+      const pos = inputEl.selectionStart ?? 0;
+      inputEl.value = inputEl.value.slice(pos);
+      inputEl.selectionStart = inputEl.selectionEnd = 0;
+    } else if (e.ctrlKey && e.key === "k") {
+      e.preventDefault();
+      const pos = inputEl.selectionStart ?? inputEl.value.length;
+      inputEl.value = inputEl.value.slice(0, pos);
+    } else if (e.ctrlKey && e.key === "w") {
+      e.preventDefault();
+      const pos = inputEl.selectionStart ?? inputEl.value.length;
+      const before = inputEl.value.slice(0, pos);
+      const after = inputEl.value.slice(pos);
+      const trimmed = before.replace(/\S+\s*$/, "");
+      inputEl.value = trimmed + after;
+      inputEl.selectionStart = inputEl.selectionEnd = trimmed.length;
+    } else if (e.ctrlKey && e.key === "a") {
+      e.preventDefault();
+      inputEl.selectionStart = inputEl.selectionEnd = 0;
+    } else if (e.ctrlKey && e.key === "e") {
+      e.preventDefault();
+      inputEl.selectionStart = inputEl.selectionEnd = inputEl.value.length;
     }
   });
 
