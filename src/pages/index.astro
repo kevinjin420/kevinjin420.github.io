@@ -1,228 +1,465 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import { SceneManager } from "@/components/home/SceneManager";
-import { BRANCHES } from "@/components/home/SceneConfig";
-
-const ABOUT_IMAGES: Record<string, string> = {
-  hardware: '/wiring_photo.jpg',
-  mrover: '/rover_photo.png',
-  cycling: '/bike_photo.jpg',
-  linux: '/mint_desktop.png',
-};
-
-const PROJECT_TAGS: Record<string, string[]> = {
-  'mrover-gui': ['Vue.js', 'JavaScript', 'Bootstrap', 'Python', 'C++'],
-  'fpv-drone': ['Soldering', 'CAD', 'LUA', 'Video Production'],
-};
-
-const PROJECT_IMAGES: Record<string, string> = {
-  'mrover-gui': '/mrover-gui.png',
-  'fpv-drone': '/drone_photo.jpg',
-};
-
-const PROJECT_LINKS: Record<string, string> = {
-  'mrover-gui': 'https://github.com/umrover/mrover-ros2/',
-};
 ---
 
 <BaseLayout title="Kevin Jin">
-  <div class="home-content-wrapper relative" style="clip-path: inset(0); font-family: 'Inter', system-ui, sans-serif;">
-    <SceneManager client:only="react" />
-
-    <main class="relative z-1 text-white">
-      {BRANCHES.map((branch) => (
-        <div
-          class="branch-wrapper relative"
-          data-branch={branch.name}
-          style={`height: calc(${branch.sections.length} * 100dvh); --branch-color: ${branch.color}; --branch-accent: ${branch.accent};`}
-        >
-          <div class="sticky top-0 h-dvh overflow-hidden flex flex-col">
-            <div class="branch-slides flex flex-1 items-stretch">
-              {branch.sections.map((section) => (
-                <section
-                  class={`min-w-full w-full h-dvh flex flex-col p-0 px-16 pb-16 box-border pointer-events-none shrink-0 ${
-                    section.name === 'hero'
-                      ? 'justify-center items-center'
-                      : section.name === 'welcome'
-                        ? 'justify-end items-center'
-                        : section.name === 'contact'
-                          ? 'justify-center items-center'
-                          : 'justify-end items-end'
-                  }`}
-                  data-id={section.name}
-                >
-                  {section.name === 'hero' ? (
-                    <div class="flex flex-col items-center">
-                      <h1 class="intro-title text-white m-0 leading-none tracking-[0.02em] text-center flex flex-col items-center select-none uppercase font-bold" style="font-family: 'Inter', sans-serif; font-size: clamp(2.5rem, 12vw, 8rem);">
-                        {(section.label || '').split(' ').map((word: string, wordIndex: number) => (
-                          <div class="block overflow-hidden" style={`--word-index: ${wordIndex}`}>
-                            {word.split('').map((char: string, charIndex: number) => (
-                              <span class="char inline-block" style={`--char-index: ${charIndex}; --word-index: ${wordIndex}`}>
-                                {char}
-                              </span>
-                            ))}
-                          </div>
-                        ))}
-                      </h1>
-                    </div>
-                  ) : section.name === 'welcome' ? (
-                    <div class="card max-w-[500px] p-6 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col text-center" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
-                      <p class="text-xl leading-relaxed text-white/90 m-0">{section.label}</p>
-                      <p class="text-base leading-relaxed text-white/60 mt-4 m-0">Computer Engineering & Data Science at the University of Michigan</p>
-                    </div>
-                  ) : section.name === 'contact' ? (
-                    <div class="card max-w-[500px] p-8 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col items-center" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
-                      <h2 class="text-3xl font-semibold uppercase leading-tight mb-6" style={`color: var(--branch-accent, #e94560);`}>Get in Touch</h2>
-                      <div class="flex flex-wrap justify-center gap-6 mb-6">
-                        <a href="https://www.linkedin.com/in/kevinjin0420/" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white transition-colors text-lg">LinkedIn</a>
-                        <a href="https://github.com/kevinjin420" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-white transition-colors text-lg">GitHub</a>
-                        <a href="mailto:kevinjin0420@gmail.com" class="text-white/70 hover:text-white transition-colors text-lg">Email</a>
-                      </div>
-                      <p class="text-white/50 text-sm">(240) 756-8098</p>
-                      <a href="/resume" class="mt-4 px-6 py-2 border border-white/30 rounded-lg text-white/80 hover:text-white hover:border-white/60 transition-all text-sm uppercase tracking-wider">View Resume</a>
-                    </div>
-                  ) : ABOUT_IMAGES[section.name] ? (
-                    <div class="card w-[600px] min-h-[180px] p-0 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-row overflow-hidden" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
-                      <img src={ABOUT_IMAGES[section.name]} alt={section.label} class="w-[200px] h-auto object-cover shrink-0" />
-                      <div class="p-6 flex flex-col justify-center">
-                        <h2 class="text-2xl font-semibold uppercase leading-tight mb-3" style={`color: var(--branch-accent, #0f94d2);`}>{section.label}</h2>
-                        <p class="text-base leading-relaxed text-white/80 m-0">{section.description}</p>
-                      </div>
-                    </div>
-                  ) : PROJECT_IMAGES[section.name] ? (
-                    <div class="card w-[600px] min-h-[180px] p-0 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-row overflow-hidden" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
-                      <img src={PROJECT_IMAGES[section.name]} alt={section.label} class="w-[200px] h-auto object-cover shrink-0" />
-                      <div class="p-6 flex flex-col justify-center">
-                        <h2 class="text-2xl font-semibold uppercase leading-tight mb-2" style={`color: var(--branch-accent, #e94560);`}>{section.label}</h2>
-                        {PROJECT_TAGS[section.name] && (
-                          <div class="flex flex-wrap gap-2 mb-3">
-                            {PROJECT_TAGS[section.name].map((tag: string) => (
-                              <span class="text-xs px-2 py-1 rounded bg-white/10 text-white/70">{tag}</span>
-                            ))}
-                          </div>
-                        )}
-                        <p class="text-base leading-relaxed text-white/80 m-0">{section.description}</p>
-                        {PROJECT_LINKS[section.name] && (
-                          <a href={PROJECT_LINKS[section.name]} target="_blank" rel="noopener noreferrer" class="mt-3 text-sm text-white/60 hover:text-white transition-colors underline">View on GitHub</a>
-                        )}
-                      </div>
-                    </div>
-                  ) : (
-                    <div class="card w-[500px] min-h-[180px] p-6 bg-[#0e0e0e]/50 backdrop-blur-md text-white pointer-events-auto flex flex-col" style={`border: 1px solid var(--branch-accent, rgba(255,255,255,0.3)); border-radius: 12px;`}>
-                      <h2 class="text-3xl font-semibold uppercase leading-tight mb-4" style={`color: var(--branch-accent, #e94560);`}>{section.label}</h2>
-                      {section.description && <p class="text-xl leading-relaxed text-white/90 m-0">{section.description}</p>}
-                    </div>
-                  )}
-                </section>
-              ))}
-            </div>
-          </div>
-        </div>
-      ))}
-    </main>
-
-    <script>
-      function clamp(min: number, input: number, max: number) {
-        return Math.max(min, Math.min(input, max))
-      }
-
-      function lerp(start: number, end: number, factor: number) {
-        return start + (end - start) * factor
-      }
-
-      document.querySelectorAll('.branch-wrapper').forEach((wrapper) => {
-        const slides = wrapper.querySelector('.branch-slides') as HTMLElement
-        const sections = slides?.querySelectorAll('section') as NodeListOf<HTMLElement>
-
-        if (!slides || !sections || sections.length <= 1) return
-
-        let currentX = 0
-        let targetX = 0
-        const damping = 0.18
-
-        const updateTarget = () => {
-          const rect = wrapper.getBoundingClientRect()
-          const wrapperHeight = wrapper.clientHeight
-          const vh = window.visualViewport?.height || window.innerHeight
-
-          const scrolledIntoWrapper = -rect.top
-          const scrollableDistance = wrapperHeight - vh
-
-          let progress = scrolledIntoWrapper / scrollableDistance
-          progress = clamp(0, progress, 1)
-
-          const slidesWidth = slides.scrollWidth
-          const maxX = slidesWidth - window.innerWidth
-          targetX = progress * maxX
-        }
-
-        const animate = () => {
-          currentX = lerp(currentX, targetX, damping)
-          slides.style.transform = `translateX(${-currentX}px)`
-          requestAnimationFrame(animate)
-        }
-
-        window.addEventListener('scroll', updateTarget, { passive: true })
-        window.addEventListener('resize', updateTarget)
-        updateTarget()
-        animate()
-      })
-    </script>
+  <div id="terminal" tabindex="0">
+    <div id="output"></div>
+    <div id="input-line">
+      <span id="prompt"></span>
+      <input id="input" type="text" spellcheck="false" autocomplete="off" autocapitalize="off" />
+    </div>
   </div>
 </BaseLayout>
 
-<style>
-  :global(html),
-  :global(body) {
-    overscroll-behavior: none;
-    -webkit-overflow-scrolling: auto;
+<style is:global>
+  #terminal {
+    position: fixed;
+    inset: 0;
+    background: #1e1e2e;
+    color: #cdd6f4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 16px;
+    overflow-y: auto;
+    cursor: text;
   }
 
-  :global(body) {
-    touch-action: pan-x pan-y;
+  #output div {
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
-  .char {
-    opacity: 0;
-    transform: translateY(100%) rotateX(-90deg);
-    animation: char-reveal 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    animation-delay: calc(0.4s + var(--word-index) * 0.3s + var(--char-index) * 0.05s);
+  #input-line {
+    display: flex;
+    align-items: center;
   }
 
-  @keyframes char-reveal {
-    0% {
-      opacity: 0;
-      transform: translateY(100%) rotateX(-90deg);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0) rotateX(0deg);
-    }
+  #prompt {
+    white-space: pre;
+    flex-shrink: 0;
   }
 
-  @media (max-width: 800px) {
-    section {
-      padding: 0 1.5rem 2rem 1.5rem !important;
-      align-items: flex-start !important;
-    }
-
-    .card {
-      width: calc(100vw - 3rem) !important;
-      max-width: none;
-      flex-direction: column !important;
-    }
-
-    .card img {
-      width: 100% !important;
-      max-height: 200px;
-    }
-
-    .card h2 {
-      font-size: 1.4rem !important;
-    }
-
-    .card p {
-      font-size: 1rem !important;
-    }
+  #input {
+    flex: 1;
+    background: none;
+    border: none;
+    outline: none;
+    color: #cdd6f4;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 0;
+    margin: 0;
+    caret-color: #cdd6f4;
+    caret-shape: block;
   }
+
+  .prompt-user { color: #a6e3a1; }
+  .prompt-sep { color: #cdd6f4; }
+  .prompt-path { color: #89b4fa; }
+  .prompt-dollar { color: #cdd6f4; }
+  .dir-entry { color: #89b4fa; }
+  .accent { color: #b4befe; }
+  .label { color: #b4befe; }
+  .link { color: #89b4fa; text-decoration: underline; cursor: pointer; }
 </style>
+
+<script>
+  const filesystem: Record<string, any> = {
+    "about.txt": [
+      "Hey, I'm Kevin Jin.",
+      "Computer Engineering & Data Science student at the University of Michigan.",
+      "I build robots, fly drones, and write software.",
+      "",
+      "Currently Teleoperations Lead for the Michigan Mars Rover team,",
+      "where I develop real-time control systems for competition rovers.",
+    ].join("\n"),
+    "blog": {
+      "hello-world.txt": [
+        "Hello World",
+        "---",
+        "First post on the new site. I rebuilt this site using Astro Starlight",
+        "as a lightweight, content-focused platform.",
+        "",
+        "  open /blog/hello-world/",
+      ].join("\n"),
+    },
+    "projects": {
+      "mrover.txt": [
+        "Michigan Mars Rover Team",
+        "---",
+        "Teleoperations Lead -- real-time rover control system.",
+        "Responsible for the frontend and backend systems that allow",
+        "operators to control the rover during competition.",
+        "",
+        "  open /projects/mrover-gui/",
+      ].join("\n"),
+      "fpv-drone.txt": [
+        "FPV Drone Build",
+        "---",
+        "Custom 5-inch FPV drone built from scratch.",
+        "Soldering, Fusion360 housings, flight software config",
+        "via serial ports and LUA scripting.",
+        "",
+        "  open /projects/fpv-drone/",
+      ].join("\n"),
+    },
+    "resume.txt": [
+      "Resume",
+      "---",
+      "Download: open resume.pdf",
+    ].join("\n"),
+    "links.txt": [
+      "Links",
+      "---",
+      "GitHub:   https://github.com/kevinjin420",
+      "LinkedIn: https://www.linkedin.com/in/kevinjin0420/",
+      "Email:    kevinjin0420@gmail.com",
+    ].join("\n"),
+  };
+
+  let cwd = "~";
+  const history: string[] = [];
+  let historyIndex = -1;
+
+  const outputEl = document.getElementById("output")!;
+  const inputEl = document.getElementById("input") as HTMLInputElement;
+  const promptEl = document.getElementById("prompt")!;
+  const terminalEl = document.getElementById("terminal")!;
+
+  function renderPrompt(): string {
+    const path = cwd;
+    return `<span class="prompt-user">kevin@kevinjin.dev</span><span class="prompt-sep">:</span><span class="prompt-path">${path}</span><span class="prompt-dollar"> $ </span>`;
+  }
+
+  function updatePrompt() {
+    promptEl.innerHTML = renderPrompt();
+  }
+
+  function resolvePath(path: string): string[] {
+    let parts: string[];
+    if (path === "~" || path === "") {
+      return [];
+    }
+    if (path.startsWith("~/")) {
+      parts = path.slice(2).split("/").filter(Boolean);
+    } else if (path.startsWith("/")) {
+      parts = path.slice(1).split("/").filter(Boolean);
+    } else {
+      const cwdParts = cwd === "~" ? [] : cwd.slice(2).split("/").filter(Boolean);
+      parts = [...cwdParts, ...path.split("/").filter(Boolean)];
+    }
+
+    const resolved: string[] = [];
+    for (const p of parts) {
+      if (p === "..") {
+        resolved.pop();
+      } else if (p !== ".") {
+        resolved.push(p);
+      }
+    }
+    return resolved;
+  }
+
+  function getNode(parts: string[]): any {
+    let node: any = filesystem;
+    for (const p of parts) {
+      if (node == null || typeof node === "string") return undefined;
+      node = node[p];
+    }
+    return node;
+  }
+
+  function pathString(parts: string[]): string {
+    return parts.length === 0 ? "~" : "~/" + parts.join("/");
+  }
+
+  function appendOutput(html: string) {
+    const div = document.createElement("div");
+    div.innerHTML = html;
+    outputEl.appendChild(div);
+  }
+
+  function escapeHtml(s: string): string {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  function neofetchOutput(): string {
+    const art = [
+      " _  __          _             _ _       ",
+      "| |/ /_____   _(_)_ __       | (_)_ __  ",
+      "| ' // _ \\ \\ / / | '_ \\   _  | | | '_ \\ ",
+      "| . \\  __/\\ V /| | | | | | |_| | | | | |",
+      "|_|\\_\\___| \\_/ |_|_| |_|  \\___/|_|_| |_|",
+    ];
+
+    const info = [
+      ["kevin@kevinjin.dev", ""],
+      ["------------------", ""],
+      ["Major", "Computer Engineering"],
+      ["School", "University of Michigan"],
+      ["Email", "kevinjin0420@gmail.com"],
+      ["OS", "Kubuntu 22.04 LTS x86_64"],
+      ["Host", "ThinkPad P1 Gen 7"],
+      ["Kernel", "Linux 6.8.0-94-generic"],
+      ["Shell", "zsh 5.8.1"],
+      ["DE", "KDE Plasma 6.2.0"],
+      ["CPU", "Intel Core Ultra 7 165H @ 5.00 GHz"],
+      ["GPU", "NVIDIA RTX 4060 Max-Q"],
+    ];
+
+    const lines: string[] = [];
+    const maxArt = Math.max(art.length, info.length);
+    const artWidth = 44;
+
+    for (let i = 0; i < maxArt; i++) {
+      const artLine = i < art.length ? art[i] : " ".repeat(artWidth);
+      const padded = artLine.padEnd(artWidth);
+      let infoStr = "";
+      if (i < info.length) {
+        const [label, value] = info[i];
+        if (value === "") {
+          infoStr = `<span class="accent">${escapeHtml(label)}</span>`;
+        } else {
+          infoStr = `<span class="label">${escapeHtml(label)}</span>: ${escapeHtml(value)}`;
+        }
+      }
+      lines.push(`<span class="accent">${escapeHtml(padded)}</span>${infoStr}`);
+    }
+
+    lines.push("");
+    lines.push("Type 'help' for available commands.");
+    return lines.join("\n");
+  }
+
+  function processCommand(input: string) {
+    const trimmed = input.trim();
+    if (!trimmed) return;
+
+    const parts = trimmed.split(/\s+/);
+    const cmd = parts[0];
+    const args = parts.slice(1);
+
+    switch (cmd) {
+      case "help": {
+        appendOutput([
+          "Available commands:",
+          "",
+          "  help           Show this help message",
+          "  ls [dir]       List directory contents",
+          "  cd &lt;dir&gt;       Change directory",
+          "  cat &lt;file&gt;     Print file contents",
+          "  open &lt;target&gt;  Navigate to a URL or page",
+          "  pwd            Print working directory",
+          "  clear          Clear terminal output",
+          "  whoami         Print current user",
+          "  neofetch       Display system info",
+        ].join("\n"));
+        break;
+      }
+
+      case "ls": {
+        const target = args[0] || "";
+        const resolved = target ? resolvePath(target) : resolvePath(cwd);
+        const node = getNode(resolved);
+        if (node == null || typeof node === "string") {
+          appendOutput(`ls: cannot access '${escapeHtml(args[0] || "")}': No such directory`);
+          break;
+        }
+        const entries = Object.keys(node).sort();
+        const formatted = entries.map((e) => {
+          const isDir = typeof node[e] === "object";
+          return isDir
+            ? `<span class="dir-entry">${escapeHtml(e)}/</span>`
+            : escapeHtml(e);
+        });
+        appendOutput(formatted.join("  "));
+        break;
+      }
+
+      case "cd": {
+        if (args.length === 0) {
+          cwd = "~";
+          updatePrompt();
+          break;
+        }
+        const target = args[0];
+        const resolved = resolvePath(target);
+        const node = getNode(resolved);
+        if (node == null || typeof node === "string") {
+          appendOutput(`cd: no such directory: ${escapeHtml(target)}`);
+          break;
+        }
+        cwd = pathString(resolved);
+        updatePrompt();
+        break;
+      }
+
+      case "cat": {
+        if (args.length === 0) {
+          appendOutput("cat: missing operand");
+          break;
+        }
+        const resolved = resolvePath(args[0]);
+        const node = getNode(resolved);
+        if (node == null) {
+          appendOutput(`cat: ${escapeHtml(args[0])}: No such file or directory`);
+        } else if (typeof node === "object") {
+          appendOutput(`cat: ${escapeHtml(args[0])}: Is a directory`);
+        } else {
+          appendOutput(escapeHtml(node));
+        }
+        break;
+      }
+
+      case "open": {
+        if (args.length === 0) {
+          appendOutput("open: missing operand");
+          break;
+        }
+        const target = args[0];
+        if (target === "resume.pdf") {
+          window.location.href = "/Shengran_Jin_resume.pdf";
+        } else if (target.startsWith("http://") || target.startsWith("https://")) {
+          window.open(target, "_blank");
+        } else if (target.startsWith("/")) {
+          window.location.href = target;
+        } else {
+          const resolved = resolvePath(target);
+          const node = getNode(resolved);
+          if (typeof node === "string") {
+            const urlMatch = node.match(/open (\/\S+)/);
+            if (urlMatch) {
+              window.location.href = urlMatch[1];
+            } else {
+              appendOutput(`open: ${escapeHtml(target)}: no link found in file`);
+            }
+          } else {
+            appendOutput(`open: ${escapeHtml(target)}: unknown target`);
+          }
+        }
+        break;
+      }
+
+      case "pwd": {
+        const display = cwd === "~" ? "/home/kevin" : "/home/kevin/" + cwd.slice(2);
+        appendOutput(escapeHtml(display));
+        break;
+      }
+
+      case "clear": {
+        outputEl.innerHTML = "";
+        break;
+      }
+
+      case "whoami": {
+        appendOutput("kevin");
+        break;
+      }
+
+      case "neofetch":
+      case "fastfetch": {
+        appendOutput(neofetchOutput());
+        break;
+      }
+
+      default: {
+        appendOutput(`${escapeHtml(cmd)}: command not found`);
+        break;
+      }
+    }
+  }
+
+  function scrollToBottom() {
+    terminalEl.scrollTop = terminalEl.scrollHeight;
+  }
+
+  function handleSubmit() {
+    const value = inputEl.value;
+    const promptHtml = renderPrompt();
+    appendOutput(`${promptHtml}${escapeHtml(value)}`);
+
+    if (value.trim()) {
+      history.push(value);
+    }
+    historyIndex = history.length;
+
+    inputEl.value = "";
+    processCommand(value);
+    scrollToBottom();
+  }
+
+  const commands = ["help", "ls", "cd", "cat", "open", "pwd", "clear", "whoami", "neofetch", "fastfetch"];
+
+  function tabComplete() {
+    const value = inputEl.value;
+    const parts = value.split(/\s+/);
+
+    if (parts.length <= 1) {
+      const prefix = parts[0];
+      const matches = commands.filter((c) => c.startsWith(prefix));
+      if (matches.length === 1) {
+        inputEl.value = matches[0] + " ";
+      }
+      return;
+    }
+
+    const cmd = parts[0];
+    if (!["cat", "cd", "ls", "open"].includes(cmd)) return;
+
+    const arg = parts[parts.length - 1];
+    const lastSlash = arg.lastIndexOf("/");
+    const dirPart = lastSlash >= 0 ? arg.slice(0, lastSlash + 1) : "";
+    const prefix = lastSlash >= 0 ? arg.slice(lastSlash + 1) : arg;
+
+    const resolved = resolvePath(dirPart || cwd);
+    const node = getNode(resolved);
+    if (node == null || typeof node === "string") return;
+
+    const entries = Object.keys(node).filter((e) => e.startsWith(prefix));
+    if (entries.length === 1) {
+      const match = entries[0];
+      const isDir = typeof node[match] === "object";
+      const completed = dirPart + match + (isDir ? "/" : "");
+      parts[parts.length - 1] = completed;
+      inputEl.value = parts.join(" ") + (isDir ? "" : " ");
+    }
+  }
+
+  inputEl.addEventListener("keydown", (e: KeyboardEvent) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      tabComplete();
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      handleSubmit();
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        historyIndex--;
+        inputEl.value = history[historyIndex];
+      }
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
+      if (historyIndex < history.length - 1) {
+        historyIndex++;
+        inputEl.value = history[historyIndex];
+      } else {
+        historyIndex = history.length;
+        inputEl.value = "";
+      }
+    }
+  });
+
+  terminalEl.addEventListener("click", () => {
+    inputEl.focus();
+  });
+
+  updatePrompt();
+  appendOutput(neofetchOutput());
+  scrollToBottom();
+  inputEl.focus();
+</script>
+</BaseLayout>

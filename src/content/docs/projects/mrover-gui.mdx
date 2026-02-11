@@ -1,0 +1,22 @@
+---
+title: Michigan Mars Rover Team
+description: Teleoperations Lead -- real-time rover control system.
+---
+
+![MRover GUI screenshot](/mrover-gui.png)
+
+## Overview
+
+Teleoperations Lead for the Michigan Mars Rover Student Project Team. Responsible for the frontend and backend systems that allow operators to control the rover during competition.
+
+## Work
+
+- Redesigned the teleoperation backend from Django to FastAPI with 6 async WebSocket endpoints and REST API, integrating ROS2 pub/sub messaging for bidirectional real-time control at 60Hz
+- Implemented MessagePack binary serialization across the Vue.js frontend and Python backend, reducing network latency by 44% and bandwidth by 36% for command/telemetry transmission
+- Built a THREE.js-based 3D rover visualization tool rendering URDF models for real-time inverse kinematics target positioning and teleoperation spatial awareness
+
+## Stack
+
+Vue.js, FastAPI, Python, C++, ROS2, MessagePack, THREE.js, WebSockets
+
+[Source](https://github.com/umrover/mrover-ros2/)

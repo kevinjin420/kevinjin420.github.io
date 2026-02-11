@@ -28,13 +28,3 @@ img {
   to { transform: rotate(360deg); }
 }
 
-@keyframes char-reveal {
-  0% {
-    opacity: 0;
-    transform: translateY(100%) rotateX(-90deg);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) rotateX(0deg);
-  }
-}

@@ -1,0 +1,25 @@
+:root {
+  --sl-color-accent-low: #1e1e2e;
+  --sl-color-accent: #b4befe;
+  --sl-color-accent-high: #cdd6f4;
+
+  --sl-color-white: #cdd6f4;
+  --sl-color-gray-1: #bac2de;
+  --sl-color-gray-2: #a6adc8;
+  --sl-color-gray-3: #585b70;
+  --sl-color-gray-4: #313244;
+  --sl-color-gray-5: #1e1e2e;
+  --sl-color-gray-6: #181825;
+  --sl-color-black: #11111b;
+
+  --sl-font: 'Inter', system-ui, sans-serif;
+  --sl-font-mono: 'JetBrains Mono', monospace;
+}
+
+html[data-theme='light'] {
+  color-scheme: dark;
+}
+
+starlight-theme-select {
+  display: none;
+}
